@@ -1,0 +1,83 @@
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Search, MapPin, User, Menu } from "lucide-react";
+import { useState } from "react";
+
+const Navbar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  return (
+    <nav className="sticky top-0 z-50 bg-secondary shadow-md">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link to="/" className="flex items-center space-x-2">
+            <div className="text-2xl font-bold text-primary-foreground">
+              ForkCast<span className="text-primary">AI</span>
+            </div>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-6">
+            <Link to="/restaurants" className="text-secondary-foreground hover:text-primary transition-colors">
+              Restaurants
+            </Link>
+            <Link to="/reviews" className="text-secondary-foreground hover:text-primary transition-colors">
+              Reviews
+            </Link>
+            <Link to="/business" className="text-secondary-foreground hover:text-primary transition-colors">
+              For Business
+            </Link>
+          </div>
+
+          {/* Actions */}
+          <div className="hidden md:flex items-center space-x-3">
+            <Button variant="ghost" size="sm" className="text-secondary-foreground hover:text-primary">
+              <User className="h-5 w-5 mr-1" />
+              Log In
+            </Button>
+            <Button size="sm" className="bg-primary hover:bg-primary/90">
+              Sign Up
+            </Button>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden text-secondary-foreground"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            <Menu className="h-6 w-6" />
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden py-4 border-t border-sidebar-border">
+            <div className="flex flex-col space-y-3">
+              <Link to="/restaurants" className="text-secondary-foreground hover:text-primary py-2">
+                Restaurants
+              </Link>
+              <Link to="/reviews" className="text-secondary-foreground hover:text-primary py-2">
+                Reviews
+              </Link>
+              <Link to="/business" className="text-secondary-foreground hover:text-primary py-2">
+                For Business
+              </Link>
+              <div className="flex flex-col space-y-2 pt-4 border-t border-sidebar-border">
+                <Button variant="ghost" size="sm" className="justify-start text-secondary-foreground">
+                  <User className="h-5 w-5 mr-2" />
+                  Log In
+                </Button>
+                <Button size="sm" className="bg-primary hover:bg-primary/90">
+                  Sign Up
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;
