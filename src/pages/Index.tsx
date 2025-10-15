@@ -4,6 +4,7 @@ import FeaturesSection from "@/components/FeaturesSection";
 import NearbyRestaurants from "@/components/NearbyRestaurants";
 import FoodPhotoUpload from "@/components/FoodPhotoUpload";
 import ChatbotButton from "@/components/ChatbotButton";
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
   return (
