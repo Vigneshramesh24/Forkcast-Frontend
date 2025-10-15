@@ -37,8 +37,15 @@ const Index = () => {
 
       {/* Footer */}
       <footer className="bg-secondary text-secondary-foreground py-8">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-sm">&copy; 2025 ForkCastAI. All rights reserved.</p>
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-sm">&copy; 2025 ForkCastAI. All rights reserved.</p>
+            <Button variant="outline" asChild>
+              <a href="tel:9153416432" className="flex items-center gap-2">
+                Contact Us: (915) 341-6432
+              </a>
+            </Button>
+          </div>
         </div>
       </footer>
 
