@@ -1,16 +1,20 @@
-import { useState, useEffect } from "react";
-import { MessageCircle, X, Send } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { MessageCircle, X, Send, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const ChatbotButton = () => {
+  const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
-  const [userRole, setUserRole] = useState<"customer" | "business" | null>(null);
+  const [userRole, setUserRole] = useState<"customer" | "business_owner" | null>(null);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<Array<{ role: string; content: string }>>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const checkUserRole = async () => {
@@ -23,12 +27,15 @@ const ChatbotButton = () => {
           .single();
         
         if (roles?.role === "business_owner") {
-          setUserRole("business");
+          setUserRole("business_owner");
           setMessages([{ role: "assistant", content: "Hello! I'm here to help with your business analytics and review management. How can I assist you?" }]);
         } else {
           setUserRole("customer");
           setMessages([{ role: "assistant", content: "Hi! I'm here to help you discover amazing restaurants and dishes. What are you craving today?" }]);
         }
+      } else {
+        setUserRole("customer");
+        setMessages([{ role: "assistant", content: "Hi! I'm here to help you discover amazing restaurants and dishes. What are you craving today?" }]);
       }
     };
     
@@ -37,24 +44,99 @@ const ChatbotButton = () => {
     }
   }, [isOpen]);
 
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   const handleClose = () => {
     setIsOpen(false);
   };
 
   const handleSendMessage = async () => {
-    if (!message.trim()) return;
+    if (!message.trim() || isLoading) return;
     
     const userMessage = { role: "user", content: message };
     setMessages(prev => [...prev, userMessage]);
     setMessage("");
-    
-    // Placeholder for AI response - will integrate with OpenAI later
-    setTimeout(() => {
-      setMessages(prev => [...prev, { 
-        role: "assistant", 
-        content: "I'm processing your request. Full AI integration coming soon!" 
-      }]);
-    }, 1000);
+    setIsLoading(true);
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          },
+          body: JSON.stringify({
+            messages: [...messages, userMessage],
+            userRole,
+          }),
+        }
+      );
+
+      if (!response.ok || !response.body) {
+        throw new Error("Failed to get response");
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let assistantContent = "";
+      let textBuffer = "";
+
+      // Add empty assistant message that we'll update
+      setMessages(prev => [...prev, { role: "assistant", content: "" }]);
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        textBuffer += decoder.decode(value, { stream: true });
+        let newlineIndex: number;
+
+        while ((newlineIndex = textBuffer.indexOf("\n")) !== -1) {
+          let line = textBuffer.slice(0, newlineIndex);
+          textBuffer = textBuffer.slice(newlineIndex + 1);
+
+          if (line.endsWith("\r")) line = line.slice(0, -1);
+          if (line.startsWith(":") || line.trim() === "") continue;
+          if (!line.startsWith("data: ")) continue;
+
+          const jsonStr = line.slice(6).trim();
+          if (jsonStr === "[DONE]") break;
+
+          try {
+            const parsed = JSON.parse(jsonStr);
+            const content = parsed.choices?.[0]?.delta?.content;
+            if (content) {
+              assistantContent += content;
+              setMessages(prev => {
+                const newMessages = [...prev];
+                newMessages[newMessages.length - 1] = {
+                  role: "assistant",
+                  content: assistantContent
+                };
+                return newMessages;
+              });
+            }
+          } catch {
+            continue;
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Chat error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to get response. Please try again.",
+        variant: "destructive",
+      });
+      // Remove the empty assistant message if error
+      setMessages(prev => prev.slice(0, -1));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -81,7 +163,7 @@ const ChatbotButton = () => {
             <div className="flex items-center gap-2">
               <MessageCircle className="h-5 w-5" />
               <span className="font-semibold">
-                {userRole === "business" ? "Business Assistant" : "Customer Assistant"}
+                {userRole === "business_owner" ? "Business Assistant" : "Customer Assistant"}
               </span>
             </div>
             <Button
@@ -108,9 +190,15 @@ const ChatbotButton = () => {
                       : "bg-primary text-primary-foreground self-end ml-auto"
                   )}
                 >
-                  <p className="text-sm">{msg.content}</p>
+                  <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
                 </div>
               ))}
+              {isLoading && (
+                <div className="rounded-lg p-3 max-w-[80%] bg-secondary/50 self-start">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                </div>
+              )}
+              <div ref={messagesEndRef} />
             </div>
 
             {/* Input Area */}
@@ -121,11 +209,12 @@ const ChatbotButton = () => {
                   placeholder="Type your message..."
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
+                  onKeyPress={(e) => e.key === "Enter" && !isLoading && handleSendMessage()}
+                  disabled={isLoading}
                   className="flex-1"
                 />
-                <Button size="icon" onClick={handleSendMessage}>
-                  <Send className="h-4 w-4" />
+                <Button size="icon" onClick={handleSendMessage} disabled={isLoading}>
+                  {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
                 </Button>
               </div>
             </div>

@@ -1,51 +1,67 @@
-import { MapPin, TrendingUp } from "lucide-react";
+import { MapPin, TrendingUp, Loader2 } from "lucide-react";
+import { useState, useEffect } from "react";
 import RestaurantCard from "./RestaurantCard";
 import LocationDetector from "./LocationDetector";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const NearbyRestaurants = () => {
-  // Placeholder data - will be replaced with Google Maps AI API
-  const nearbyRestaurants = [
-    {
-      name: "Sakura Sushi House",
-      cuisine: "Japanese",
-      rating: 4.8,
-      reviewCount: 342,
-      priceRange: "$$$",
-      location: "Downtown, 2.3 mi",
-      imageUrl: "https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=800&h=600&fit=crop",
-      distance: "2.3 mi",
-    },
-    {
-      name: "La Bella Pizza",
-      cuisine: "Italian",
-      rating: 4.6,
-      reviewCount: 521,
-      priceRange: "$$",
-      location: "North Side, 1.8 mi",
-      imageUrl: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&h=600&fit=crop",
-      distance: "1.8 mi",
-    },
-    {
-      name: "The Burger Joint",
-      cuisine: "American",
-      rating: 4.7,
-      reviewCount: 687,
-      priceRange: "$$",
-      location: "City Center, 0.5 mi",
-      imageUrl: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&h=600&fit=crop",
-      distance: "0.5 mi",
-    },
-    {
-      name: "Taco Fiesta",
-      cuisine: "Mexican",
-      rating: 4.5,
-      reviewCount: 289,
-      priceRange: "$",
-      location: "West End, 3.1 mi",
-      imageUrl: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=800&h=600&fit=crop",
-      distance: "3.1 mi",
-    },
-  ];
+  const { toast } = useToast();
+  const [restaurants, setRestaurants] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [userLocation, setUserLocation] = useState<{ lat: number; lon: number } | null>(null);
+
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          setUserLocation({ lat: latitude, lon: longitude });
+          await fetchNearbyRestaurants(latitude, longitude);
+        },
+        (error) => {
+          console.error("Geolocation error:", error);
+          toast({
+            title: "Location Error",
+            description: "Unable to get your location. Showing default results.",
+            variant: "destructive",
+          });
+          setLoading(false);
+        }
+      );
+    } else {
+      toast({
+        title: "Geolocation not supported",
+        description: "Your browser doesn't support location services.",
+        variant: "destructive",
+      });
+      setLoading(false);
+    }
+  }, []);
+
+  const fetchNearbyRestaurants = async (lat: number, lon: number) => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase.functions.invoke('nearby-restaurants', {
+        body: { lat, lon, radius: 1500 }
+      });
+
+      if (error) throw error;
+
+      if (data.results) {
+        setRestaurants(data.results.slice(0, 8)); // Limit to 8 restaurants
+      }
+    } catch (error) {
+      console.error("Error fetching restaurants:", error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch nearby restaurants.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const suggestions = [
     {
@@ -84,11 +100,39 @@ const NearbyRestaurants = () => {
               <LocationDetector />
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {nearbyRestaurants.map((restaurant, index) => (
-              <RestaurantCard key={index} {...restaurant} />
-            ))}
-          </div>
+          
+          {loading ? (
+            <div className="flex justify-center items-center py-12">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              <span className="ml-2 text-muted-foreground">Finding restaurants near you...</span>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {restaurants.length > 0 ? (
+                restaurants.map((restaurant, index) => (
+                  <RestaurantCard
+                    key={restaurant.place_id || index}
+                    name={restaurant.name}
+                    cuisine={restaurant.types?.[0]?.replace(/_/g, ' ') || "Restaurant"}
+                    rating={restaurant.rating || 0}
+                    reviewCount={restaurant.user_ratings_total || 0}
+                    priceRange={restaurant.price_level ? "$".repeat(restaurant.price_level) : "$$"}
+                    location={restaurant.vicinity || "Nearby"}
+                    imageUrl={
+                      restaurant.photos?.[0]
+                        ? `https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&h=600&fit=crop`
+                        : "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&h=600&fit=crop"
+                    }
+                    distance="Nearby"
+                  />
+                ))
+              ) : (
+                <div className="col-span-full text-center py-12 text-muted-foreground">
+                  No restaurants found nearby. Try adjusting your location.
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Food Suggestions */}
