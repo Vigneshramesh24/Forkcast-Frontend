@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import FeaturesSection from "@/components/FeaturesSection";
@@ -7,19 +10,48 @@ import ChatbotButton from "@/components/ChatbotButton";
 import { Button } from "@/components/ui/button";
 
 const Index = () => {
+  const navigate = useNavigate();
+  const [isChecking, setIsChecking] = useState(true);
+
+  useEffect(() => {
+    // Check if user is authenticated
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        navigate("/auth");
+      }
+      setIsChecking(false);
+    };
+
+    checkAuth();
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (!session) {
+        navigate("/auth");
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
+  if (isChecking) {
+    return null; // or a loading spinner
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
       <Hero />
+      
+      {/* AI Food Photo Analysis */}
+      <FoodPhotoUpload />
       
       {/* Restaurants Near Me & AI Suggestions */}
       <NearbyRestaurants />
       
       {/* Why Choose ForkCastAI */}
       <FeaturesSection />
-      
-      {/* AI Food Photo Analysis */}
-      <FoodPhotoUpload />
 
       {/* CTA Section */}
       <section className="py-16 bg-primary text-primary-foreground">
@@ -30,9 +62,9 @@ const Index = () => {
           <p className="text-lg mb-8 opacity-90 max-w-2xl mx-auto">
             Join thousands of food lovers using AI-powered insights to find the perfect meal
           </p>
-          <button className="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-white/90 transition-colors">
+          <Button className="bg-white text-primary hover:bg-white/90">
             Get Started Free
-          </button>
+          </Button>
         </div>
       </section>
 
@@ -41,8 +73,8 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-sm">&copy; 2025 ForkCastAI. All rights reserved.</p>
-            <Button variant="outline" asChild>
-              <a href="tel:9153416432" className="flex items-center gap-2">
+            <Button variant="secondary" asChild>
+              <a href="tel:9153416432" className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground">
                 Contact Us: (915) 341-6432
               </a>
             </Button>

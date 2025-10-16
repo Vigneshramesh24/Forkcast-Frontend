@@ -30,14 +30,10 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Actions */}
-          <div className="hidden md:flex items-center space-x-3">
+          {/* Profile Icon */}
+          <div className="hidden md:flex items-center">
             <Button variant="ghost" size="sm" className="text-secondary-foreground hover:text-primary">
-              <User className="h-5 w-5 mr-1" />
-              Log In
-            </Button>
-            <Button size="sm" className="bg-primary hover:bg-primary/90">
-              Sign Up
+              <User className="h-5 w-5" />
             </Button>
           </div>
 
@@ -63,13 +59,10 @@ const Navbar = () => {
               <Link to="/business" className="text-secondary-foreground hover:text-primary py-2">
                 For Business
               </Link>
-              <div className="flex flex-col space-y-2 pt-4 border-t border-sidebar-border">
+              <div className="pt-4 border-t border-sidebar-border">
                 <Button variant="ghost" size="sm" className="justify-start text-secondary-foreground">
                   <User className="h-5 w-5 mr-2" />
-                  Log In
-                </Button>
-                <Button size="sm" className="bg-primary hover:bg-primary/90">
-                  Sign Up
+                  Profile
                 </Button>
               </div>
             </div>

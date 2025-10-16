@@ -7,61 +7,81 @@ import { useToast } from "@/hooks/use-toast";
 
 const NearbyRestaurants = () => {
   const { toast } = useToast();
-  const [restaurants, setRestaurants] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [userLocation, setUserLocation] = useState<{ lat: number; lon: number } | null>(null);
-
-  useEffect(() => {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const { latitude, longitude } = position.coords;
-          setUserLocation({ lat: latitude, lon: longitude });
-          await fetchNearbyRestaurants(latitude, longitude);
-        },
-        (error) => {
-          console.error("Geolocation error:", error);
-          toast({
-            title: "Location Error",
-            description: "Unable to get your location. Showing default results.",
-            variant: "destructive",
-          });
-          setLoading(false);
-        }
-      );
-    } else {
-      toast({
-        title: "Geolocation not supported",
-        description: "Your browser doesn't support location services.",
-        variant: "destructive",
-      });
-      setLoading(false);
+  const [restaurants] = useState<any[]>([
+    {
+      name: "Bella Italia",
+      types: ["italian", "restaurant"],
+      rating: 4.5,
+      user_ratings_total: 234,
+      price_level: 2,
+      vicinity: "123 Main St, Downtown",
+      place_id: "1"
+    },
+    {
+      name: "Sushi Paradise",
+      types: ["japanese", "sushi"],
+      rating: 4.8,
+      user_ratings_total: 456,
+      price_level: 3,
+      vicinity: "456 Oak Ave, Midtown",
+      place_id: "2"
+    },
+    {
+      name: "Taco Fiesta",
+      types: ["mexican", "restaurant"],
+      rating: 4.3,
+      user_ratings_total: 189,
+      price_level: 1,
+      vicinity: "789 Pine Rd, East Side",
+      place_id: "3"
+    },
+    {
+      name: "The Burger Joint",
+      types: ["american", "burgers"],
+      rating: 4.6,
+      user_ratings_total: 312,
+      price_level: 2,
+      vicinity: "321 Elm St, West End",
+      place_id: "4"
+    },
+    {
+      name: "Dragon Wok",
+      types: ["chinese", "asian"],
+      rating: 4.4,
+      user_ratings_total: 267,
+      price_level: 2,
+      vicinity: "654 Maple Dr, North Side",
+      place_id: "5"
+    },
+    {
+      name: "Pizza Palace",
+      types: ["pizza", "italian"],
+      rating: 4.7,
+      user_ratings_total: 398,
+      price_level: 2,
+      vicinity: "987 Cedar Ln, South End",
+      place_id: "6"
+    },
+    {
+      name: "Thai Orchid",
+      types: ["thai", "asian"],
+      rating: 4.5,
+      user_ratings_total: 223,
+      price_level: 2,
+      vicinity: "159 Birch St, Central",
+      place_id: "7"
+    },
+    {
+      name: "Steakhouse Prime",
+      types: ["steakhouse", "american"],
+      rating: 4.9,
+      user_ratings_total: 512,
+      price_level: 4,
+      vicinity: "753 Walnut Ave, Uptown",
+      place_id: "8"
     }
-  }, []);
-
-  const fetchNearbyRestaurants = async (lat: number, lon: number) => {
-    try {
-      setLoading(true);
-      const { data, error } = await supabase.functions.invoke('nearby-restaurants', {
-        body: { lat, lon, radius: 1500 }
-      });
-
-      if (error) throw error;
-
-      if (data.results) {
-        setRestaurants(data.results.slice(0, 8)); // Limit to 8 restaurants
-      }
-    } catch (error) {
-      console.error("Error fetching restaurants:", error);
-      toast({
-        title: "Error",
-        description: "Failed to fetch nearby restaurants.",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+  ]);
+  const [loading] = useState(false);
 
   const suggestions = [
     {

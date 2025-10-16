@@ -177,24 +177,24 @@ const ChatbotButton = () => {
           </div>
 
           {/* Chat Interface */}
-          <div className="flex-1 flex flex-col">
+          <div className="flex-1 flex flex-col min-h-0">
             {/* Chat Messages Area */}
-            <div className="flex-1 p-4 overflow-y-auto space-y-4">
+            <div className="flex-1 p-4 overflow-y-auto space-y-4 flex flex-col">
               {messages.map((msg, idx) => (
                 <div
                   key={idx}
                   className={cn(
-                    "rounded-lg p-3 max-w-[80%]",
+                    "rounded-lg p-3 max-w-[85%] break-words",
                     msg.role === "assistant"
                       ? "bg-secondary/50 self-start"
                       : "bg-primary text-primary-foreground self-end ml-auto"
                   )}
                 >
-                  <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                  <p className="text-sm whitespace-pre-wrap break-words">{msg.content}</p>
                 </div>
               ))}
               {isLoading && (
-                <div className="rounded-lg p-3 max-w-[80%] bg-secondary/50 self-start">
+                <div className="rounded-lg p-3 max-w-[85%] bg-secondary/50 self-start">
                   <Loader2 className="h-4 w-4 animate-spin" />
                 </div>
               )}

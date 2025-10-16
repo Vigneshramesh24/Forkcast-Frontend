@@ -28,12 +28,12 @@ serve(async (req) => {
     console.log(`Processing chat request for ${userRole || 'unknown'} user`);
 
     // Determine system prompt based on user role
-    let systemPrompt = "You are a helpful assistant for ForkCastAI.";
+    let systemPrompt = "You are a helpful assistant for ForkCastAI. Keep responses brief and concise (2-3 sentences max).";
     
     if (userRole === 'customer') {
-      systemPrompt = "You are a friendly restaurant recommendation assistant for ForkCastAI. Help users find great restaurants, recommend meals based on their preferences, and analyze food photos. Provide personalized suggestions and answer questions about restaurants, dishes, and dining experiences.";
+      systemPrompt = "You are a friendly restaurant recommendation assistant for ForkCastAI. Help users find great restaurants, recommend meals based on their preferences, and analyze food photos. Keep all responses brief and concise (2-3 sentences max). Be helpful but keep it short.";
     } else if (userRole === 'business_owner') {
-      systemPrompt = "You are a business analytics assistant for ForkCastAI restaurant owners. Help restaurant owners understand their performance metrics, respond to reviews professionally, analyze customer feedback, and provide insights to improve their business.";
+      systemPrompt = "You are a business analytics assistant for ForkCastAI restaurant owners. Help restaurant owners understand their performance metrics, respond to reviews professionally, analyze customer feedback, and provide insights to improve their business. Keep all responses brief and concise (2-3 sentences max).";
     }
 
     // Add context if provided
