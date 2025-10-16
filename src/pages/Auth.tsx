@@ -57,11 +57,11 @@ const Auth = () => {
 
         if (profileError) throw profileError;
 
-        // Assign role
+        // Assign role using secure server-side function
         const role = userType === "business" ? "business_owner" : "customer";
-        const { error: roleError } = await supabase.from("user_roles").insert({
-          user_id: data.user.id,
-          role: role,
+        const { error: roleError } = await supabase.rpc("assign_user_role", {
+          p_user_id: data.user.id,
+          p_requested_role: role,
         });
 
         if (roleError) throw roleError;
