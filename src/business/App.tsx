@@ -2,10 +2,10 @@ import { Toaster } from "@/shared/components/ui/toaster";
 import { Toaster as Sonner } from "@/shared/components/ui/sonner";
 import { TooltipProvider } from "@/shared/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import LoginSelection from "@/pages/LoginSelection";
-import CustomerApp from "@/customer/CustomerApp";
-import BusinessApp from "@/business/BusinessApp";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Index from "./pages/Index";
+import SavedInformation from "./pages/SavedInformation";
+import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
@@ -16,11 +16,10 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<LoginSelection />} />
-          <Route path="/customer/*" element={<CustomerApp />} />
-          <Route path="/business/*" element={<BusinessApp />} />
-          {/* Redirect unknown routes to login selection */}
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="/" element={<Index />} />
+          <Route path="/saved-information" element={<SavedInformation />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
