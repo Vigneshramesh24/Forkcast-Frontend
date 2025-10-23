@@ -6,24 +6,40 @@ import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/components/ui/tabs";
-import { User, Briefcase } from "lucide-react";
+
 import { useToast } from "@/shared/hooks/use-toast";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
-  const [userType, setUserType] = useState<"customer" | "business">("customer");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
   useEffect(() => {
-    // Check if user is already logged in
+    // Check if user is already logged in and has a role
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
-        navigate("/customer/");
+        // Check if user has a role assigned
+        const { data: roles } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", session.user.id)
+          .single();
+        
+        if (roles) {
+          // Redirect based on role
+          if (roles.role === "business_owner") {
+            navigate("/business/");
+          } else {
+            navigate("/customer/");
+          }
+        } else {
+          // No role assigned, go to role selection
+          navigate("/customer/select-role");
+        }
       }
     };
     checkAuth();
@@ -41,7 +57,6 @@ const Auth = () => {
           emailRedirectTo: `${window.location.origin}/`,
           data: {
             display_name: displayName,
-            user_type: userType,
           },
         },
       });
@@ -57,21 +72,13 @@ const Auth = () => {
 
         if (profileError) throw profileError;
 
-        // Assign role using secure server-side function
-        const role = userType === "business" ? "business_owner" : "customer";
-        const { error: roleError } = await supabase.rpc("assign_user_role", {
-          p_user_id: data.user.id,
-          p_requested_role: role,
-        });
-
-        if (roleError) throw roleError;
-
         toast({
           title: "Account created!",
-          description: "You can now sign in.",
+          description: "Please select your account type.",
         });
         
-        navigate("/customer/");
+        // Redirect to role selection page
+        navigate("/customer/select-role");
       }
     } catch (error: any) {
       toast({
@@ -96,12 +103,32 @@ const Auth = () => {
 
       if (error) throw error;
 
-      toast({
-        title: "Welcome back!",
-        description: "You've successfully signed in.",
-      });
-      
-      navigate("/customer/");
+      // Check if user has a role
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data: roles } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", user.id)
+          .single();
+        
+        if (roles) {
+          toast({
+            title: "Welcome back!",
+            description: "You've successfully signed in.",
+          });
+          
+          // Redirect based on role
+          if (roles.role === "business_owner") {
+            navigate("/business/");
+          } else {
+            navigate("/customer/");
+          }
+        } else {
+          // No role assigned, go to role selection
+          navigate("/customer/select-role");
+        }
+      }
     } catch (error: any) {
       toast({
         title: "Error",
@@ -192,30 +219,6 @@ const Auth = () => {
                     required
                     minLength={6}
                   />
-                </div>
-
-                <div className="space-y-2">
-                  <Label>I'm using ForkCastAI as:</Label>
-                  <div className="grid grid-cols-2 gap-4">
-                    <Button
-                      type="button"
-                      variant={userType === "customer" ? "default" : "outline"}
-                      className="h-auto py-4 flex-col gap-2"
-                      onClick={() => setUserType("customer")}
-                    >
-                      <User className="h-6 w-6" />
-                      <span>Customer</span>
-                    </Button>
-                    <Button
-                      type="button"
-                      variant={userType === "business" ? "default" : "outline"}
-                      className="h-auto py-4 flex-col gap-2"
-                      onClick={() => setUserType("business")}
-                    >
-                      <Briefcase className="h-6 w-6" />
-                      <span>Business</span>
-                    </Button>
-                  </div>
                 </div>
 
                 <Button type="submit" className="w-full" disabled={isLoading}>
