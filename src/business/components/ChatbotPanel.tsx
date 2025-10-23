@@ -2,7 +2,8 @@ import { Plus, Send } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { ScrollArea } from "@/shared/components/ui/scroll-area";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { supabase } from "@/shared/integrations/supabase/client";
 
 interface Message {
   id: string;
@@ -54,6 +55,11 @@ const ChatbotPanel = () => {
     },
   ]);
   const [inputValue, setInputValue] = useState("");
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const handleSend = () => {
     if (!inputValue.trim()) return;
@@ -79,9 +85,9 @@ const ChatbotPanel = () => {
   };
 
   return (
-    <div className="h-full flex flex-col bg-chat-bg rounded-2xl p-8">
+    <div className="h-full flex flex-col bg-chat-bg rounded-2xl p-8 min-h-0">
       {/* Chat Messages */}
-      <div className="flex-1 mb-6 overflow-hidden">
+      <div className="flex-1 mb-4 overflow-hidden min-h-0">
         <ScrollArea className="h-full pr-2">
           <div className="space-y-5">
           {messages.map((message) => (
@@ -100,13 +106,14 @@ const ChatbotPanel = () => {
             </div>
           </div>
         ))}
+            <div ref={messagesEndRef} />
           </div>
         </ScrollArea>
       </div>
 
-      {/* Input Bar */}
-      <div className="relative flex justify-center">
-        <div className="flex items-center gap-3 bg-card border-2 border-primary/20 rounded-full px-1 py-1 shadow-md hover:border-primary/40 transition-smooth w-3/4">
+      {/* Input Bar - sticky and raised */}
+      <div className="sticky bottom-0 left-0 right-0 flex justify-center pt-2">
+        <div className="flex items-center gap-3 bg-card border-2 border-primary/20 rounded-full px-3 py-2 shadow-lg w-11/12 max-w-3xl">
           <Button 
             variant="ghost" 
             size="icon" 
