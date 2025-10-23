@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import LoginSelection from "@/pages/LoginSelection";
 import CustomerApp from "@/customer/CustomerApp";
 import BusinessApp from "@/business/BusinessApp";
+import Auth from "@/customer/pages/Auth";
+import RoleSelection from "@/customer/pages/RoleSelection";
 
 const queryClient = new QueryClient();
 
@@ -16,10 +18,14 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<LoginSelection />} />
+          {/* Landing: Authentication first */}
+          <Route path="/" element={<Auth />} />
+          {/* Role selection after sign-in */}
+          <Route path="/select-role" element={<RoleSelection />} />
+          <Route path="/login-selection" element={<LoginSelection />} />
           <Route path="/customer/*" element={<CustomerApp />} />
           <Route path="/business/*" element={<BusinessApp />} />
-          {/* Redirect unknown routes to login selection */}
+          {/* Redirect unknown routes to auth */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>

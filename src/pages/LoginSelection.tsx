@@ -28,7 +28,7 @@ const LoginSelection = () => {
             </CardHeader>
             <CardContent className="text-center">
               <Button 
-                onClick={() => navigate("/customer/auth")} 
+                onClick={() => navigate("/")} 
                 className="w-full"
                 size="lg"
               >
@@ -50,7 +50,7 @@ const LoginSelection = () => {
             </CardHeader>
             <CardContent className="text-center">
               <Button 
-                onClick={() => navigate("/business/")} 
+                onClick={() => navigate("/")} 
                 className="w-full"
                 size="lg"
                 variant="outline"

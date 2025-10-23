@@ -203,8 +203,8 @@ const ChatbotButton = () => {
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Input Area */}
-            <div className="p-4 border-t">
+            {/* Input Area - make sticky to ensure visibility */}
+            <div className="sticky bottom-0 bg-card p-4 border-t">
               <div className="flex gap-2">
                 <Input
                   type="text"

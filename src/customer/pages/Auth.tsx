@@ -38,7 +38,7 @@ const Auth = () => {
           }
         } else {
           // No role assigned, go to role selection
-          navigate("/customer/select-role");
+            navigate("/select-role");
         }
       }
     };
@@ -126,7 +126,7 @@ const Auth = () => {
           }
         } else {
           // No role assigned, go to role selection
-          navigate("/customer/select-role");
+            navigate("/select-role");
         }
       }
     } catch (error: any) {
