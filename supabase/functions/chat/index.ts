@@ -1,5 +1,20 @@
+// @ts-nocheck
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+// Load local env for development (optional). If a .env.local file exists at repo root
+// it will be loaded into Deno.env so the function can access LOVABLE_API_KEY locally.
+// In production (Supabase Edge Functions) environment variables set in the platform
+// will still take precedence.
+import { config } from "https://deno.land/std@0.168.0/dotenv/mod.ts";
+try {
+  const _env = config({ path: ".env.local" });
+  for (const [k, v] of Object.entries(_env)) {
+    // don't overwrite already-set environment variables
+    if (!Deno.env.get(String(k))) Deno.env.set(String(k), String(v));
+  }
+} catch (e) {
+  // If dotenv isn't present or .env.local doesn't exist, ignore silently.
+}
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',

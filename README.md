@@ -64,6 +64,21 @@ This project is built with:
 
 Simply open [Lovable](https://lovable.dev/projects/fdd47ded-cfa4-45ef-b012-972345aad8f1) and click on Share -> Publish.
 
+## Chatbot configuration
+
+This project proxies chat requests through a server-side function which uses the Lovable-managed API key (stored as `LOVABLE_API_KEY`). To run chat locally or point the frontend to your deployed function, set the following:
+
+- In your Supabase project (or whichever platform hosts the Edge Function), set the environment variable `LOVABLE_API_KEY` to the key provided by Lovable.
+- Locally, set `VITE_CHAT_FUNCTION_URL` in your `.env` to the function URL (for example `https://<project>.functions.supabase.co/chat`) so the frontend can call it. The app falls back to `/api/chat` if this isn't set.
+
+Example .env entries:
+
+```properties
+VITE_CHAT_FUNCTION_URL="https://<your-function-host>/chat"
+```
+
+Do NOT store `LOVABLE_API_KEY` in the frontend `.env`; it must remain server-side only.
+
 ## Can I connect a custom domain to my Lovable project?
 
 Yes, you can!

@@ -4,11 +4,44 @@ import { Search, MapPin, User, Menu, LogOut } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/shared/integrations/supabase/client";
 import { useToast } from "@/shared/hooks/use-toast";
+import { useEffect } from "react";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [showBusinessLink, setShowBusinessLink] = useState(true);
+
+  useEffect(() => {
+    const checkRole = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        setShowBusinessLink(true);
+        return;
+      }
+
+      const { data: roles } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", session.user.id)
+        .single();
+
+      // If user is a business owner, keep the link; otherwise hide it
+      if (roles?.role === "business_owner") {
+        setShowBusinessLink(true);
+      } else {
+        setShowBusinessLink(false);
+      }
+    };
+
+    checkRole();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
+      checkRole();
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
@@ -46,9 +79,11 @@ const Navbar = () => {
             <Link to="/reviews" className="text-secondary-foreground hover:text-primary transition-colors">
               Reviews
             </Link>
-            <Link to="/business" className="text-secondary-foreground hover:text-primary transition-colors">
-              For Business
-            </Link>
+            {showBusinessLink && (
+              <Link to="/business" className="text-secondary-foreground hover:text-primary transition-colors">
+                For Business
+              </Link>
+            )}
           </div>
 
           {/* Profile & Sign Out */}
@@ -85,9 +120,11 @@ const Navbar = () => {
               <Link to="/reviews" className="text-secondary-foreground hover:text-primary py-2">
                 Reviews
               </Link>
-              <Link to="/business" className="text-secondary-foreground hover:text-primary py-2">
-                For Business
-              </Link>
+              {showBusinessLink && (
+                <Link to="/business" className="text-secondary-foreground hover:text-primary py-2">
+                  For Business
+                </Link>
+              )}
               <div className="pt-4 border-t border-sidebar-border flex flex-col gap-2">
                 <Button variant="ghost" size="sm" className="justify-start text-secondary-foreground">
                   <User className="h-5 w-5 mr-2" />
