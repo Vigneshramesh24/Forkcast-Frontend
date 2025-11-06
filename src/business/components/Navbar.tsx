@@ -32,33 +32,32 @@ const Navbar = () => {
     navigate('/auth');
   }, [navigate, toast]);
   return (
-    <nav className="fixed top-0 left-0 right-0 h-[56px] bg-navbar text-navbar-foreground z-50">
+    <nav className="fixed top-0 left-0 right-0 h-[56px] z-50" style={{ backgroundColor: '#344257' }}>
       <div className="flex items-center justify-between h-full px-8">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 cursor-pointer">
-          <Utensils className="h-6 w-6 text-primary rotate-90" strokeWidth={2.5} />
+          <div className="text-lg font-bold text-white">ForkCast<span className="text-primary">AI</span></div>
         </Link>
 
         {/* Account Button */}
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button 
-              variant="ghost" 
-              className="h-9 px-3 rounded-full bg-logo-bg hover:bg-logo-bg/90 text-foreground gap-2 transition-smooth shadow-sm"
-            >
-              <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center">
-                <User className="h-3 w-3 text-primary-foreground" />
-              </div>
-              <ChevronDown className="h-3 w-3 opacity-70" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48 z-[100] bg-popover">
-            <DropdownMenuItem asChild>
-              <a href="/saved-information">Saved Information</a>
-            </DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuItem className="text-destructive" onClick={handleSignOut}>Sign Out</DropdownMenuItem>
-          </DropdownMenuContent>
+          {/* We'll keep the Trigger as child but control open via hover in the parent wrapper */}
+          <div className="relative">
+            <DropdownMenuTrigger asChild>
+              <button className="h-10 w-10 rounded-full bg-transparent flex items-center justify-center cursor-pointer mr-5" aria-label="Account">
+                <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center hover:bg-[#f97116] transition-colors duration-500">
+                  <User className="h-4 w-4 text-white" />
+                </div>
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48 z-[100] bg-popover">
+              <DropdownMenuItem asChild>
+                <a href="/saved-information">Saved Information</a>
+              </DropdownMenuItem>
+              <DropdownMenuItem>Settings</DropdownMenuItem>
+              <DropdownMenuItem className="text-destructive" onClick={handleSignOut}>Sign Out</DropdownMenuItem>
+            </DropdownMenuContent>
+          </div>
         </DropdownMenu>
       </div>
     </nav>
