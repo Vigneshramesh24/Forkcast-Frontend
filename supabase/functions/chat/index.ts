@@ -16,6 +16,19 @@ try {
   // If dotenv isn't present or .env.local doesn't exist, ignore silently.
 }
 
+// Dev helpers: allow skipping auth during local development and log whether the
+// LOVABLE_API_KEY is present (masked). Set SKIP_AUTH=true in .env.local to
+// bypass Supabase auth checks for quick local testing. Do NOT enable in prod.
+const SKIP_AUTH = Deno.env.get('SKIP_AUTH') === 'true';
+const _lovable = Deno.env.get('LOVABLE_API_KEY');
+if (_lovable) {
+  // show only last 4 chars so the key itself isn't exposed in logs
+  const masked = '***' + String(_lovable).slice(-4);
+  console.log('LOVABLE_API_KEY present (masked):', masked);
+} else {
+  console.log('LOVABLE_API_KEY not set');
+}
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -27,37 +40,49 @@ serve(async (req) => {
   }
 
   try {
-    // Validate authentication
-    const authHeader = req.headers.get('Authorization');
-    if (!authHeader) {
-      return new Response(
-        JSON.stringify({ error: 'Authentication required' }),
-        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    // Validate authentication (can be skipped in local dev with SKIP_AUTH=true)
+    let user;
+    let userRole = 'customer';
+    let supabaseClient;
+    if (!SKIP_AUTH) {
+      const authHeader = req.headers.get('Authorization');
+      if (!authHeader) {
+        return new Response(
+          JSON.stringify({ error: 'Authentication required' }),
+          { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      supabaseClient = createClient(
+        Deno.env.get('SUPABASE_URL') ?? '',
+        Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+        { global: { headers: { Authorization: authHeader } } }
       );
+
+      const { data: { user: fetchedUser }, error: userError } = await supabaseClient.auth.getUser();
+      if (userError || !fetchedUser) {
+        return new Response(
+          JSON.stringify({ error: 'Invalid authentication' }),
+          { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      user = fetchedUser;
+
+      // Fetch real user role from database
+      const { data: roleData } = await supabaseClient
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .single();
+
+      userRole = roleData?.role || 'customer';
+    } else {
+      // Local dev: skip auth and use a fake user
+      user = { id: 'local-test' } as any;
+      userRole = 'customer';
+      console.log('SKIP_AUTH enabled — skipping Supabase auth checks');
     }
-
-    const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-      { global: { headers: { Authorization: authHeader } } }
-    );
-
-    const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
-    if (userError || !user) {
-      return new Response(
-        JSON.stringify({ error: 'Invalid authentication' }),
-        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
-
-    // Fetch real user role from database
-    const { data: roleData } = await supabaseClient
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', user.id)
-      .single();
-
-    const userRole = roleData?.role || 'customer';
 
     const { messages, context } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');

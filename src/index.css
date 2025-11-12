@@ -93,7 +93,40 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  /* Body uses the plain design token background by default; pages that should show the wood
+     texture will receive the `.wood-bg` class. This keeps the Restaurants page free of the wood.
+  */
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Apply the wood-plank texture + overlay only when this class is present on a page root */
+  .wood-bg {
+    /* brighter overall look: reduce dark overlay */
+    background-image: linear-gradient(rgba(0,0,0,0.30), rgba(0,0,0,0.30)), url('/assets/wood-bg.jpg');
+    /* cover the full viewport and page height */
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    /* allow scrolling; enable fixed on larger screens for a premium feel */
+    background-attachment: scroll;
+    color: hsl(var(--foreground));
+  }
+
+  @media (min-width: 768px) {
+    .wood-bg {
+      background-attachment: fixed;
+    }
+  }
+
+  /* Improve contrast for cards placed on top of the textured background */
+  .wood-bg .card,
+  .wood-bg .bg-card,
+  .wood-bg .Card {
+    background-color: rgba(255,255,255,0.92) !important;
+    box-shadow: 0 12px 30px rgba(2,6,23,0.32);
+    border-radius: 0.75rem;
+    border: 1px solid rgba(15,23,42,0.06);
+    backdrop-filter: saturate(1.05) blur(0.5px);
   }
 }

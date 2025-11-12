@@ -10,38 +10,6 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [showBusinessLink, setShowBusinessLink] = useState(true);
-
-  useEffect(() => {
-    const checkRole = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        setShowBusinessLink(true);
-        return;
-      }
-
-      const { data: roles } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", session.user.id)
-        .single();
-
-      // If user is a business owner, keep the link; otherwise hide it
-      if (roles?.role === "business_owner") {
-        setShowBusinessLink(true);
-      } else {
-        setShowBusinessLink(false);
-      }
-    };
-
-    checkRole();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
-      checkRole();
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
 
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
@@ -61,7 +29,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-secondary shadow-md">
+  <nav className="sticky top-0 z-50 bg-[#8b1f1f]/90 backdrop-blur-sm shadow-md">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -73,29 +41,19 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
-            <Link to="/restaurants" className="text-secondary-foreground hover:text-primary transition-colors">
+            <Link to="/restaurants" className="text-white hover:text-primary transition-colors">
               Restaurants
             </Link>
-            <Link to="/reviews" className="text-secondary-foreground hover:text-primary transition-colors">
-              Reviews
-            </Link>
-            {showBusinessLink && (
-              <Link to="/business" className="text-secondary-foreground hover:text-primary transition-colors">
-                For Business
-              </Link>
-            )}
+            {/* 'For Business' removed from customer navbar */}
           </div>
 
-          {/* Profile & Sign Out */}
+          {/* Sign Out (profile button removed) */}
           <div className="hidden md:flex items-center gap-2">
-            <Button variant="ghost" size="sm" className="text-secondary-foreground hover:text-primary">
-              <User className="h-5 w-5" />
-            </Button>
             <Button 
               variant="ghost" 
               size="sm" 
               onClick={handleSignOut}
-              className="text-secondary-foreground hover:text-destructive"
+              className="text-white hover:text-destructive"
             >
               <LogOut className="h-5 w-5" />
             </Button>
@@ -112,24 +70,13 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-sidebar-border">
+            <div className="md:hidden py-4 border-t border-sidebar-border">
             <div className="flex flex-col space-y-3">
-              <Link to="/restaurants" className="text-secondary-foreground hover:text-primary py-2">
+              <Link to="/restaurants" className="text-white hover:text-primary py-2">
                 Restaurants
               </Link>
-              <Link to="/reviews" className="text-secondary-foreground hover:text-primary py-2">
-                Reviews
-              </Link>
-              {showBusinessLink && (
-                <Link to="/business" className="text-secondary-foreground hover:text-primary py-2">
-                  For Business
-                </Link>
-              )}
+              {/* 'For Business' removed from customer navbar */}
               <div className="pt-4 border-t border-sidebar-border flex flex-col gap-2">
-                <Button variant="ghost" size="sm" className="justify-start text-secondary-foreground">
-                  <User className="h-5 w-5 mr-2" />
-                  Profile
-                </Button>
                 <Button 
                   variant="ghost" 
                   size="sm" 

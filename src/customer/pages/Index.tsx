@@ -40,7 +40,7 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen wood-bg flex flex-col">
       <Navbar />
       <Hero />
       
@@ -54,7 +54,7 @@ const Index = () => {
       <FeaturesSection />
 
       {/* CTA Section */}
-      <section className="py-16 bg-primary text-primary-foreground">
+  <section className="py-16 bg-primary/95 text-primary-foreground backdrop-blur-sm">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Ready to Discover Your Next Favorite Restaurant?
@@ -69,7 +69,7 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-secondary text-secondary-foreground py-8">
+  <footer className="bg-secondary/95 text-secondary-foreground py-8 backdrop-blur-sm">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-sm">&copy; 2025 ForkCastAI. All rights reserved.</p>

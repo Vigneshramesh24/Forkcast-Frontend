@@ -115,22 +115,24 @@ export default function ChatSidebar() {
       <div
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}
-        className="fixed left-0 top-0 h-full z-50"
+        className="fixed left-0 top-0 h-full z-60"
         style={{ width: 8 }}
         aria-hidden
       />
 
       {/* sliding panel: use translate-x for smooth motion */}
       <div
-        className={`fixed left-0 top-0 h-full z-50 transform transition-transform duration-300 ease-in-out flex flex-col w-[360px] ${open ? "translate-x-0" : "-translate-x-full pointer-events-none"}`}
+        className={`fixed left-0 top-0 h-full z-60 transform transition-transform duration-300 ease-in-out flex flex-col w-[360px] ${open ? "translate-x-0" : "-translate-x-full pointer-events-none"}`}
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}
         aria-hidden={!open}
       >
-        <Card className="h-full w-[360px] flex flex-col">
-          <div className="p-4 border-b flex items-center justify-between">
+        {/* outer wrapper ensures opaque background so navbar doesn't show through rounded corners */}
+        <div className="h-full w-[360px] flex flex-col bg-card text-card-foreground overflow-hidden shadow-lg">
+          <Card className="h-full w-full flex flex-col bg-transparent border-0 shadow-none">
+          <div className="p-4 border-b flex items-center justify-between bg-gradient-to-r from-transparent via-transparent to-transparent">
             <div>
-              <div className="font-semibold">Assistant</div>
+              <div className="text-lg font-bold">AI Powered Chatbot</div>
               <div className="text-xs text-muted-foreground">Ask any questions and we will answer</div>
             </div>
             <Button variant="ghost" size="icon" onClick={() => setOpen(false)}>
@@ -140,8 +142,19 @@ export default function ChatSidebar() {
 
           <div className="flex-1 overflow-auto p-4">
             <div className="space-y-3">
-              {messages.length === 0 && (
-                <div className="p-3 rounded bg-slate-50 text-sm text-muted-foreground">Ask any questions and we will answer — try "Find nearby pizza"</div>
+              {/* When chat is empty and the user hasn't typed, show a centered header */}
+              {messages.length === 0 && input.trim() === "" && (
+                <div className="w-full flex items-center justify-center py-8">
+                  <div className="text-center">
+                    <div className="text-lg font-bold">AI Powered Chatbot</div>
+                    <div className="text-sm text-muted-foreground mt-1">Ask anything — e.g. "Find nearby pizza"</div>
+                  </div>
+                </div>
+              )}
+
+              {/* Fallback guidance when there are no messages (kept but hidden once user types) */}
+              {messages.length === 0 && input.trim() !== "" && (
+                <div className="p-3 rounded bg-slate-50 text-sm text-muted-foreground">Start typing and press Send to get an answer</div>
               )}
 
               {messages.map((m, i) => (
@@ -160,6 +173,7 @@ export default function ChatSidebar() {
             </div>
           </div>
         </Card>
+        </div>
       </div>
     </>
   );

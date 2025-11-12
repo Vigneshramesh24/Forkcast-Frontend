@@ -3,7 +3,7 @@ import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { ScrollArea } from "@/shared/components/ui/scroll-area";
 import { useState, useRef, useEffect } from "react";
-import { supabase } from "@/shared/integrations/supabase/client";
+import { useBusinessData } from "@/business/lib/BusinessDataContext";
 
 interface Message {
   id: string;
@@ -12,50 +12,11 @@ interface Message {
 }
 
 const ChatbotPanel = () => {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "1",
-      text: "Can you show me what you can do?",
-      sender: "user",
-    },
-    {
-      id: "2",
-      text: "Absolutely! Pass me any data, images, or whatever you'd like, and I can visualize it for you and give you recommendations!",
-      sender: "bot",
-    },
-    {
-      id: "3",
-      text: "That sounds great! Can you analyze my sales data from last quarter?",
-      sender: "user",
-    },
-    {
-      id: "4",
-      text: "Of course! I can help you analyze your sales trends, identify patterns, and provide actionable insights. Just share your data with me.",
-      sender: "bot",
-    },
-    {
-      id: "5",
-      text: "What kind of visualizations can you create?",
-      sender: "user",
-    },
-    {
-      id: "6",
-      text: "I can create various charts and graphs including bar charts, line graphs, pie charts, heatmaps, and more. I'll choose the best visualization based on your data type and what you want to discover.",
-      sender: "bot",
-    },
-    {
-      id: "7",
-      text: "Can you also provide recommendations based on the data?",
-      sender: "user",
-    },
-    {
-      id: "8",
-      text: "Absolutely! I analyze your data to identify trends, anomalies, and opportunities. I'll provide actionable recommendations to help you make data-driven decisions.",
-      sender: "bot",
-    },
-  ]);
+  // Start with an empty conversation (no placeholder/demo messages)
+  const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const { ragSearch, totalRevenue, revenueByDate } = useBusinessData();
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -64,24 +25,69 @@ const ChatbotPanel = () => {
   const handleSend = () => {
     if (!inputValue.trim()) return;
 
+    const text = inputValue.trim();
     const newMessage: Message = {
       id: Date.now().toString(),
-      text: inputValue,
+      text,
       sender: "user",
     };
 
-    setMessages([...messages, newMessage]);
+    // append user's message
+    setMessages((prev) => [...prev, newMessage]);
     setInputValue("");
 
-    // Simulate bot response
+    // show a temporary 'thinking' bot message and then replace it with a synthesized reply
+    const thinkingId = `bot-${Date.now()}`;
+    const thinkingMessage: Message = { id: thinkingId, text: "Analyzing...", sender: "bot" };
+    setMessages((prev) => [...prev, thinkingMessage]);
+
+    // rudimentary rule-based / RAG responder using BusinessDataContext
+    const formatCurrency = (n: number) => `$${n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+    const q = text.toLowerCase();
+    let botText = "";
+
+    try {
+      if (q.includes("total") && q.includes("revenue")) {
+        const total = totalRevenue();
+        botText = `Total revenue across uploaded rows is ${formatCurrency(total)}.`;
+      } else if (q.includes("revenue by date") || q.includes("by date") || q.includes("trend") || q.includes("sales trend")) {
+        const byDate = revenueByDate();
+        if (byDate.length === 0) {
+          botText = "I don't have any uploaded sales data yet. Try uploading a CSV in Analytics.";
+        } else {
+          const sample = byDate.slice(-5).map((d) => `${d.date}: ${formatCurrency(d.revenue)}`).join(', ');
+          botText = `I have ${byDate.length} date buckets. Recent examples — ${sample}.`;
+        }
+      } else if (q.match(/sales on|sales for|revenue on|revenue for/)) {
+        // try to match a date-like token in the query
+        const rows = ragSearch(text);
+        if (rows.length === 0) botText = `I couldn't find sales for that date or query.`;
+        else {
+          const summed = rows.reduce((s, r) => s + (r.revenue || 0), 0);
+          botText = `Found ${rows.length} rows matching. Total: ${formatCurrency(summed)}. Example: ${rows
+            .slice(0, 3)
+            .map((r) => `${r.date} ${formatCurrency(r.revenue)}`)
+            .join(' ; ')}`;
+        }
+      } else {
+        // generic fallback: run ragSearch and show sample rows
+        const rows = ragSearch(text);
+        if (rows.length === 0) botText = `I couldn't find data matching "${text}". Try queries like "total revenue", "sales on 2023-10-01", or "revenue trend".`;
+        else
+          botText = `I found ${rows.length} matching rows. Sample: ${rows
+            .slice(0, 3)
+            .map((r) => `${r.date} ${formatCurrency(r.revenue)}`)
+            .join(' ; ')}`;
+      }
+    } catch (e) {
+      botText = "Sorry, I couldn't analyze the data — please try again.";
+    }
+
+    // simulate a short processing delay and replace the thinking message
     setTimeout(() => {
-      const botResponse: Message = {
-        id: (Date.now() + 1).toString(),
-        text: "I'm analyzing your request. This is a demo response showing how the chat interface works.",
-        sender: "bot",
-      };
-      setMessages((prev) => [...prev, botResponse]);
-    }, 1000);
+      setMessages((prev) => prev.map((m) => (m.id === thinkingId ? { ...m, text: botText } : m)));
+    }, 600);
   };
 
   return (
@@ -90,22 +96,32 @@ const ChatbotPanel = () => {
       <div className="flex-1 mb-4 overflow-hidden min-h-0">
         <ScrollArea className="h-full pr-2">
           <div className="space-y-5">
-          {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
-          >
-            <div
-              className={`max-w-[75%] px-5 py-3.5 ${
-                message.sender === "user"
-                  ? "bg-primary text-primary-foreground rounded-[20px] rounded-tr-md"
-                  : "bg-card text-card-foreground shadow-sm rounded-[20px] rounded-tl-md border border-border/50"
-              }`}
-            >
-              <p className="text-sm leading-relaxed">{message.text}</p>
-            </div>
-          </div>
-        ))}
+            {/* Show centered header when chat is empty and user hasn't typed yet */}
+            {messages.length === 0 && inputValue.trim() === "" ? (
+              <div className="w-full h-full flex items-center justify-center py-6">
+                <div className="text-center">
+                  <div className="text-xl font-bold">AI Powered Chatbot</div>
+                  <div className="text-sm text-muted-foreground mt-2">Ask me anything — start by typing below</div>
+                </div>
+              </div>
+            ) : (
+              messages.map((message) => (
+                <div
+                  key={message.id}
+                  className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
+                >
+                  <div
+                    className={`max-w-[75%] px-5 py-3.5 ${
+                      message.sender === "user"
+                        ? "bg-primary text-primary-foreground rounded-[20px] rounded-tr-md"
+                        : "bg-card text-card-foreground shadow-sm rounded-[20px] rounded-tl-md border border-border/50"
+                    }`}
+                  >
+                    <p className="text-sm leading-relaxed">{message.text}</p>
+                  </div>
+                </div>
+              ))
+            )}
             <div ref={messagesEndRef} />
           </div>
         </ScrollArea>
