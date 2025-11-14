@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import PLACEHOLDER_RESTAURANTS, { Restaurant, Review } from "@/customer/lib/placeholders";
 import { useEffect, useMemo, useState, useRef } from "react";
 import { Star } from "lucide-react";
+import { MAP_PLACEHOLDER } from "@/customer/lib/imageUtils";
 import { Button } from "@/shared/components/ui/button";
 import { Textarea } from "@/shared/components/ui/textarea";
 
@@ -62,7 +63,8 @@ const SuggestionDetail = () => {
   const fallbackImages = CUISINE_IMAGE_MAP[cuisineKey] ?? CUISINE_IMAGE_MAP['default'];
   const chosenGallery = suggested.imageUrl && suggested.imageUrl.length > 0 ? [suggested.imageUrl] : fallbackImages.slice(0, 3);
 
-  const chosenMap = MAP_IMAGES[Math.abs((suggested.name || '').split('').reduce((s, c) => s + c.charCodeAt(0), 0)) % MAP_IMAGES.length];
+  // Unified map placeholder (override previous random scenic maps)
+  const chosenMap = MAP_PLACEHOLDER;
 
   // helper: generate more realistic synthetic reviews when suggestion is not a placeholder
   const generateSyntheticReviews = (name: string, cuisine: string, count = 4) => {
@@ -279,7 +281,7 @@ const SuggestionDetail = () => {
             </div>
             {/* Map image (uses restaurant.mapUrl if available) */}
             <div className="h-48 rounded overflow-hidden">
-              <img src={dataSource.mapUrl ?? dataSource.gallery[0]} alt={`Map of ${dataSource.name}`} className="w-full h-full object-cover" />
+              <img src={MAP_PLACEHOLDER} alt={`Map of ${dataSource.name}`} className="w-full h-full object-cover" />
             </div>
             <div className="mt-3 flex gap-2">
               <Button

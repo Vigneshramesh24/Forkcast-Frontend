@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { Textarea } from "@/shared/components/ui/textarea";
 import { Star } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
+import { getDishImage, getStaticMapImage, getCuisineImage, MAP_PLACEHOLDER } from "@/customer/lib/imageUtils";
 
 const RestaurantDetail = () => {
   const { id } = useParams();
@@ -92,7 +93,7 @@ const RestaurantDetail = () => {
               >
                 {restaurant.name}
               </h1>
-              <div className={`text-sm ${visible ? 'opacity-90' : 'opacity-0'}`}>{restaurant.cuisine} • {restaurant.location}</div>
+              <div className={`text-sm ${visible ? 'opacity-90' : 'opacity-0'}`}>{restaurant.cuisine} $$ • {restaurant.location}</div>
             </div>
             <div className="absolute top-4 right-4 bg-white/95 rounded px-3 py-1 flex items-center gap-2">
               <Star className="h-5 w-5 fill-primary text-primary" />
@@ -102,13 +103,21 @@ const RestaurantDetail = () => {
 
           <p className="mt-4 text-muted-foreground">{restaurant.description}</p>
 
-          {/* Menu with images (placeholder) */}
+          {/* Menu with accurate images */}
           <h3 className="mt-6 font-semibold">Menu</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-3">
             {restaurant.menu.map((m, idx) => (
               <div key={m} className="bg-card rounded-lg p-3 text-center shadow-sm">
                 <div className="h-24 mb-2 bg-gray-100 rounded overflow-hidden flex items-center justify-center">
-                  <img src={restaurant.gallery?.[idx % restaurant.gallery.length] ?? restaurant.imageUrl} alt={m} className="object-cover h-full w-full" />
+                  <img
+                    src={
+                      (restaurant.menuImages && restaurant.menuImages[m])
+                        || getDishImage(m, restaurant.cuisine)
+                        || getCuisineImage(restaurant.cuisine)
+                    }
+                    alt={m}
+                    className="object-cover h-full w-full"
+                  />
                 </div>
                 <div className="font-medium">{m}</div>
               </div>
@@ -155,14 +164,62 @@ const RestaurantDetail = () => {
           </div>
         </div>
 
-        {/* Right column: gallery + map placeholder */}
+        {/* Right column: business info + map */}
         <div className="w-full md:w-80 flex-shrink-0 space-y-4">
-          <div className="bg-card rounded-lg p-2 shadow">
-            <div className="grid grid-cols-1 gap-2">
-              {restaurant.gallery.map((g, i) => (
-                <img key={i} src={g} alt={`${restaurant.name}-${i}`} className="w-full h-28 object-cover rounded" />
-              ))}
+          <div className="bg-card rounded-lg p-4 shadow">
+            <div className="flex items-center justify-between mb-3">
+              <div className="font-semibold">Info</div>
             </div>
+            <div className="space-y-2 text-sm">
+              {restaurant.priceRange && (
+                <div><span className="text-muted-foreground">Price:</span> {restaurant.priceRange}</div>
+              )}
+              {restaurant.phone && (
+                <div><span className="text-muted-foreground">Phone:</span> {restaurant.phone}</div>
+              )}
+              {restaurant.location && (
+                <div><span className="text-muted-foreground">Address:</span> {restaurant.location}</div>
+              )}
+            </div>
+            {restaurant.hours && (
+              <div className="mt-3">
+                <div className="text-sm font-medium mb-1">Hours</div>
+                <ul className="text-sm text-muted-foreground space-y-1">
+                  {Object.entries(restaurant.hours).map(([day, hrs]) => (
+                    <li key={day} className="flex justify-between"><span>{day}</span><span>{hrs}</span></li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            <div className="mt-3 flex gap-2">
+              {restaurant.phone && (
+                <Button asChild variant="outline">
+                  <a href={`tel:${restaurant.phone.replace(/[^\d+]/g, '')}`}>Call</a>
+                </Button>
+              )}
+              {restaurant.website && (
+                <Button asChild>
+                  <a href={restaurant.website} target="_blank" rel="noreferrer">Website</a>
+                </Button>
+              )}
+            </div>
+            {/* Popular dishes preview */}
+            {restaurant.menu?.length ? (
+              <div className="mt-4">
+                <div className="text-sm font-medium mb-2">Popular dishes</div>
+                <div className="grid grid-cols-2 gap-2">
+                  {restaurant.menu.slice(0, 2).map((m, i) => (
+                    <div key={m} className="rounded overflow-hidden h-20">
+                      <img
+                        src={(restaurant.menuImages && restaurant.menuImages[m]) || getDishImage(m, restaurant.cuisine)}
+                        alt={m}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : null}
           </div>
 
           <div className="bg-card rounded-lg p-4 shadow">
@@ -171,14 +228,22 @@ const RestaurantDetail = () => {
             </div>
             {/* Map image (uses restaurant.mapUrl if available) */}
             <div className="h-48 rounded overflow-hidden">
-              <img src={restaurant.mapUrl ?? restaurant.gallery[0]} alt={`Map of ${restaurant.name}`} className="w-full h-full object-cover" />
+              <img
+                src={MAP_PLACEHOLDER}
+                alt={`Map of ${restaurant.name}`}
+                className="w-full h-full object-cover"
+              />
             </div>
             <div className="mt-3 flex gap-2">
               <Button
                 variant="outline"
                 onClick={() => {
-                  if (restaurant.mapUrl) {
-                    window.open(restaurant.mapUrl, "_blank", "noopener");
+                  if (restaurant.lat && restaurant.lon) {
+                    const url = `https://www.google.com/maps/search/?api=1&query=${restaurant.lat},${restaurant.lon}`;
+                    window.open(url, "_blank", "noopener");
+                  } else if (restaurant.location) {
+                    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(restaurant.location)}`;
+                    window.open(url, "_blank", "noopener");
                   }
                 }}
               >

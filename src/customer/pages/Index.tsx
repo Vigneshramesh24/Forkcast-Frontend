@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense, lazy } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/shared/integrations/supabase/client";
 import Navbar from "@/customer/components/Navbar";
 import Hero from "@/customer/components/Hero";
-import FeaturesSection from "@/customer/components/FeaturesSection";
-import NearbyRestaurants from "@/customer/components/NearbyRestaurants";
-import FoodPhotoUpload from "@/customer/components/FoodPhotoUpload";
+const FeaturesSection = lazy(() => import("@/customer/components/FeaturesSection"));
+const NearbyRestaurants = lazy(() => import("@/customer/components/NearbyRestaurants"));
+const FoodPhotoUpload = lazy(() => import("@/customer/components/FoodPhotoUpload"));
 import ChatbotButton from "@/customer/components/ChatbotButton";
 import { Button } from "@/shared/components/ui/button";
 
@@ -40,41 +40,49 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen wood-bg flex flex-col">
+    <div className="min-h-screen flex flex-col">
       <Navbar />
       <Hero />
-      
+      {/* Continuous wood background through all sections */}
       {/* AI Food Photo Analysis */}
-      <FoodPhotoUpload />
-      
-      {/* Restaurants Near Me & AI Suggestions */}
-      <NearbyRestaurants />
-      
-      {/* Why Choose ForkCastAI */}
-      <FeaturesSection />
+      <Suspense fallback={<div className="container mx-auto px-4 py-12 text-white/80">Loading…</div>}>
+        <FoodPhotoUpload />
+      </Suspense>
 
-      {/* CTA Section */}
-  <section className="py-16 bg-primary/95 text-primary-foreground backdrop-blur-sm">
+      {/* Restaurants Near Me & AI Suggestions */}
+      <Suspense fallback={<div className="container mx-auto px-4 py-12 text-white/80">Loading nearby restaurants…</div>}>
+        <NearbyRestaurants />
+      </Suspense>
+
+      {/* Why Choose ForkCastAI */}
+      <Suspense fallback={<div className="container mx-auto px-4 py-12 text-white/80">Loading features…</div>}>
+        <FeaturesSection />
+      </Suspense>
+
+      {/* CTA Section (overlay card style on wood) */}
+  <section className="py-16 wood-section wood-bg-section">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <div className="max-w-3xl mx-auto bg-card/90 backdrop-blur-sm rounded-xl px-8 py-10 shadow-lg border border-white/10">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-card-foreground">
             Ready to Discover Your Next Favorite Restaurant?
-          </h2>
-          <p className="text-lg mb-8 opacity-90 max-w-2xl mx-auto">
+            </h2>
+            <p className="text-lg mb-8 opacity-90 max-w-2xl mx-auto text-muted-foreground">
             Join thousands of food lovers using AI-powered insights to find the perfect meal
-          </p>
-          <Button className="bg-white text-primary hover:bg-white/90">
-            Get Started Free
-          </Button>
+            </p>
+            <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+              Get Started Free
+            </Button>
+          </div>
         </div>
       </section>
 
-      {/* Footer */}
-  <footer className="bg-secondary/95 text-secondary-foreground py-8 backdrop-blur-sm">
+      {/* Footer on wood with subtle top gradient */}
+  <footer className="py-8 wood-section wood-bg-section">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-sm">&copy; 2025 ForkCastAI. All rights reserved.</p>
-            <Button variant="secondary" asChild>
-              <a href="tel:9153416432" className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground">
+            <p className="text-sm text-white/80">&copy; 2025 ForkCastAI. All rights reserved.</p>
+            <Button variant="secondary" asChild className="bg-primary hover:bg-primary/90 text-primary-foreground">
+              <a href="tel:9153416432" className="flex items-center gap-2">
                 Contact Us: (915) 341-6432
               </a>
             </Button>

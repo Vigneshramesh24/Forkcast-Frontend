@@ -1,6 +1,7 @@
 import { MapPin, TrendingUp, Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import RestaurantCard from "./RestaurantCard";
+import { getCuisineImage } from "@/customer/lib/imageUtils";
 import LocationDetector from "./LocationDetector";
 import { supabase } from "@/shared/integrations/supabase/client";
 import PLACEHOLDER_RESTAURANTS from "@/customer/lib/placeholders";
@@ -216,13 +217,13 @@ const NearbyRestaurants = () => {
   }, [locationHook.search]);
 
   return (
-    <section className="py-12 bg-background">
+  <section className="py-12 wood-section wood-bg-section">
       <div className="container mx-auto px-4 space-y-12">
         {/* Restaurants Near Me */}
         <div>
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2 flex items-center gap-2">
+              <h2 className="text-2xl md:text-3xl font-bold text-white drop-shadow-sm mb-2 flex items-center gap-2">
                 <MapPin className="h-6 w-6 text-primary" />
                 Restaurants Near You
               </h2>
@@ -233,7 +234,7 @@ const NearbyRestaurants = () => {
           {loading ? (
             <div className="flex justify-center items-center py-12">
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
-              <span className="ml-2 text-muted-foreground">Finding restaurants near you...</span>
+              <span className="ml-2 text-white/85">Finding restaurants near you...</span>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -281,17 +282,13 @@ const NearbyRestaurants = () => {
                       reviewCount={restaurant.user_ratings_total || 0}
                       priceRange={restaurant.price_level ? "$".repeat(restaurant.price_level) : "$$"}
                       location={restaurant.vicinity || "Nearby"}
-                      imageUrl={
-                        restaurant.photos?.[0]
-                          ? `https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&h=600&fit=crop`
-                          : "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&h=600&fit=crop"
-                      }
+                      imageUrl={getCuisineImage(restaurant.types?.[0] || restaurant.name)}
                       distance="Nearby"
                     />
                   </div>
                 ))
               ) : (
-                <div className="col-span-full text-center py-12 text-muted-foreground">
+                <div className="col-span-full text-center py-12 text-white/85">
                   No restaurants found nearby. Try adjusting your location.
                 </div>
               )}
@@ -301,11 +298,11 @@ const NearbyRestaurants = () => {
 
         {/* Food Suggestions */}
         <div>
-          <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-6 flex items-center gap-2">
+              <h2 className="text-2xl md:text-3xl font-bold text-white drop-shadow-sm mb-6 flex items-center gap-2">
             <TrendingUp className="h-6 w-6 text-primary" />
             AI-Powered Suggestions
           </h2>
-          <p className="text-muted-foreground mb-6">
+          <p className="text-white/80 mb-6">
             Based on your preferences and popular choices
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -336,7 +333,7 @@ const NearbyRestaurants = () => {
                     const params = new URLSearchParams();
                     if (restaurant.name) params.set('name', restaurant.name);
                     if (restaurant.cuisine) params.set('cuisine', restaurant.cuisine);
-                    const image = restaurant.imageUrl || restaurant.image || (restaurant.photos?.[0] ? restaurant.photos[0] : undefined);
+                    const image = restaurant.imageUrl || restaurant.image || getCuisineImage(restaurant.cuisine || restaurant.types?.[0] || restaurant.name);
                     if (image) params.set('imageUrl', image);
                     const loc = restaurant.location || restaurant.vicinity || restaurant.location;
                     if (loc) params.set('location', loc);

@@ -20,7 +20,7 @@ const LocationDetector = () => {
   }, []);
 
   return (
-    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+    <div className="flex items-center gap-2 text-sm text-white/80">
       <MapPin className="h-4 w-4 text-primary" />
       {loading ? (
         <>
@@ -34,7 +34,7 @@ const LocationDetector = () => {
             variant="ghost"
             size="sm"
             onClick={detectLocation}
-            className="h-6 px-2 text-xs"
+            className="h-6 px-2 text-xs text-white/80 hover:text-white"
           >
             Update
           </Button>

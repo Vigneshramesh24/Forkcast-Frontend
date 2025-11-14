@@ -4,6 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui
 import { ScrollArea } from "@/shared/components/ui/scroll-area";
 import { Button } from "@/shared/components/ui/button";
 import { BarChart3, TrendingUp, Save, ShoppingCart, Users, Target, Camera, Upload } from "lucide-react";
+import SalesHeatmap from '@/business/components/SalesHeatmap';
+import FinancialLineChart from '@/business/components/FinancialLineChart';
+import ItemsSoldPieChart from '@/business/components/ItemsSoldPieChart';
 import {
   ResponsiveContainer,
   LineChart,
@@ -129,7 +132,26 @@ const AnalyticsPanel = () => {
         const iso = isNaN(date.getTime()) ? (obj.date || '') : date.toISOString().slice(0,10);
         const revenue = parseFloat((obj.revenue || obj.amount || '0').replace(/[^0-9.-]+/g, '')) || 0;
         const orders = parseInt(obj.orders || '0') || 0;
-        out.push({ date: iso, revenue, orders, raw: obj });
+        const expenses = parseFloat((obj.expenses || obj.costs || '0').replace(/[^0-9.-]+/g, '')) || 0;
+        const profitRaw = parseFloat((obj.profit || obj.margin || '').replace(/[^0-9.-]+/g, ''));
+        const profit = isNaN(profitRaw) ? (revenue - expenses) : profitRaw;
+        // dynamic item parsing: columns like item_pizza_qty, item_pizza_revenue, item_pizza_cost
+        const itemMap: Record<string, { name: string; quantity: number; revenue: number; cost: number }> = {};
+        Object.keys(obj).forEach(k => {
+          if (!k.startsWith('item_')) return;
+          // pattern item_<name>_<metric>
+          const parts = k.split('_');
+          if (parts.length < 3) return;
+          const name = parts.slice(1, parts.length - 1).join('_');
+          const metric = parts[parts.length - 1];
+          if (!itemMap[name]) itemMap[name] = { name, quantity: 0, revenue: 0, cost: 0 };
+          const valNum = parseFloat(String(obj[k]).replace(/[^0-9.-]+/g, '')) || 0;
+          if (metric === 'qty' || metric === 'quantity') itemMap[name].quantity = valNum;
+          if (metric === 'revenue') itemMap[name].revenue = valNum;
+          if (metric === 'cost') itemMap[name].cost = valNum;
+        });
+        const items = Object.values(itemMap).filter(i => i.quantity || i.revenue || i.cost);
+        out.push({ date: iso, revenue, orders, expenses, profit, items, raw: obj });
       }
       // store in localStorage and update state
       localStorage.setItem('business_sales_rows', JSON.stringify(out));
@@ -212,6 +234,16 @@ const AnalyticsPanel = () => {
           </Card>
         </div>
         <div className="flex flex-col gap-5 pb-4">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-lg font-semibold text-foreground">Business Performance Dashboard</h2>
+            <Button size="sm" variant="outline" onClick={()=>{/* placeholder future refresh hook */}} className="h-7">Refresh</Button>
+          </div>
+          {/* New Financial & Sales Visualization Row */}
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
+            <FinancialLineChart />
+            <SalesHeatmap />
+            <ItemsSoldPieChart />
+          </div>
           {/* Revenue Chart Card */}
           <Card ref={revenueCardRef} className="shadow-sm border-border/50 rounded-2xl overflow-hidden min-h-[400px]">
         <CardHeader className="pb-3 border-b border-border/50">

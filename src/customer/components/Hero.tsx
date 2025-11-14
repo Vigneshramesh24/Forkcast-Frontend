@@ -85,22 +85,24 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative h-[500px] md:h-[600px] overflow-hidden">
-      {/* Overlay only; the page root provides the wood background. */}
-      <div className="absolute inset-0 bg-gradient-to-b from-secondary/30 via-secondary/20 to-secondary/40 pointer-events-none" />
+    <section
+      className="relative h-[500px] md:h-[600px] overflow-hidden wood-bg-section"
+    >
+      {/* Readability overlay; background is provided by page-level .wood-bg */}
+  <div className="absolute inset-0 bg-black/10" aria-hidden="true" />
 
-      {/* Content */}
+  {/* Content */}
       <div className="relative container mx-auto px-4 h-full flex flex-col justify-center items-center text-center">
-        <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
+  <h1 className="text-4xl md:text-6xl font-bold text-white drop-shadow-md tracking-tight leading-[1.05] mb-4">
           Discover Amazing Food
         </h1>
-        <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl">
+  <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl drop-shadow-sm">
           AI-powered reviews and insights to help you find the perfect meal
         </p>
 
-        {/* Search Bar (location temporarily removed). Suggestions appear while typing. */}
-        <div className="w-full max-w-3xl bg-white rounded-xl shadow-2xl p-2 flex flex-col md:flex-row gap-2 relative">
-          <div className="flex-1 flex items-center px-3 border-b md:border-b-0 md:border-r border-border pb-2 md:pb-0 relative">
+    {/* Search Bar (location temporarily removed). Suggestions appear while typing. */}
+  <div className="w-full max-w-3xl bg-white/95 backdrop-saturate-150 rounded-xl shadow-2xl p-2 flex flex-col md:flex-row gap-2 relative transition-shadow focus-within:shadow-[0_12px_40px_rgba(2,6,23,0.35)] focus-within:ring-4 focus-within:ring-primary/20 focus-within:ring-offset-2 focus-within:ring-offset-transparent">
+          <div className="flex-1 flex items-center px-3 pb-2 md:pb-0 relative">
             <Search className="h-5 w-5 text-muted-foreground mr-2" />
             <Input
               type="text"
@@ -221,7 +223,7 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Search results (placeholder) */}
+        {/* Search results (placeholder) */}
       <div className="relative container mx-auto px-4 mt-6 max-w-3xl">
         {results.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

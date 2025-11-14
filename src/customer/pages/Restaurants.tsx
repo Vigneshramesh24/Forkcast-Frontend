@@ -48,7 +48,8 @@ const Restaurants = () => {
   const prioritized = [...recentOrdered, ...others];
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen wood-bg">
+      <div className="container mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold">Restaurants{q ? ` — results for "${q}"` : ""}{!q && cuisineParam ? ` — ${cuisineParam}` : ""}</h1>
         <div className="flex items-center gap-4">
@@ -99,14 +100,14 @@ const Restaurants = () => {
                   navigate(`/?force=true&redirect=${encodeURIComponent(target)}`);
                 }
               } }}
-              className="cursor-pointer"
+              className="cursor-pointer h-full"
             >
               <RestaurantCard
                 name={r.name}
                 cuisine={r.cuisine}
                 rating={r.rating}
                 reviewCount={r.reviewCount}
-                priceRange={"$$"}
+                priceRange={r.priceRange ?? "$$"}
                 location={r.location ?? "Nearby"}
                 imageUrl={r.imageUrl}
               />
@@ -114,6 +115,7 @@ const Restaurants = () => {
           ))}
         </div>
       )}
+      </div>
     </div>
   );
 };

@@ -102,31 +102,49 @@ All colors MUST be HSL.
 
   /* Apply the wood-plank texture + overlay only when this class is present on a page root */
   .wood-bg {
-    /* brighter overall look: reduce dark overlay */
-    background-image: linear-gradient(rgba(0,0,0,0.30), rgba(0,0,0,0.30)), url('/assets/wood-bg.jpg');
-    /* cover the full viewport and page height */
+    /* lighten overlay so wood texture is visible */
+    /* robust fallback so background never disappears if image-set isn't supported */
+    background-image: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.15)), url('/assets/wood-bg.jpg');
+    /* full-page hero look */
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-    /* allow scrolling; enable fixed on larger screens for a premium feel */
+    /* scroll with content to avoid GPU downscale blurring artifacts */
     background-attachment: scroll;
     color: hsl(var(--foreground));
   }
 
-  @media (min-width: 768px) {
-    .wood-bg {
-      background-attachment: fixed;
-    }
+  /* image-set override removed; single-source background used above */
+
+  /* Section separator utility: apply subtle top gradient to delineate sections without hard bands */
+  .wood-section {
+    position: relative;
+  }
+  .wood-section::before {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; top: 0; height: 60px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0));
+    pointer-events: none;
+  }
+
+  /* Per-section wood background (avoids one giant scaled image). Replace wood-bg.jpg with a higher-res or seamless tile for 4K crispness */
+  .wood-bg-section {
+    background-image: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.15)), url('/assets/wood-bg.jpg');
+    background-position: center top;
+    background-size: cover; /* change to a fixed size (e.g., 1600px auto) if you want consistent plank scale */
+    background-repeat: no-repeat; /* change to repeat if you add a seamless tile */
   }
 
   /* Improve contrast for cards placed on top of the textured background */
   .wood-bg .card,
   .wood-bg .bg-card,
   .wood-bg .Card {
-    background-color: rgba(255,255,255,0.92) !important;
+    background-color: rgba(255,255,255,0.90) !important;
     box-shadow: 0 12px 30px rgba(2,6,23,0.32);
     border-radius: 0.75rem;
     border: 1px solid rgba(15,23,42,0.06);
-    backdrop-filter: saturate(1.05) blur(0.5px);
+    backdrop-filter: saturate(1.05) blur(4px);
+    -webkit-backdrop-filter: saturate(1.05) blur(4px);
   }
 }
