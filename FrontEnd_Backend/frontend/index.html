@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h2>Upload Food Image</h2>
+<input type="file" id="fileInput"/>
+<button onclick="uploadImage()">Upload</button>
+
+<h2>Or Paste a Text Description</h2>
+<input type="text" id="textInput"/>
+<button onclick="submitText()">Detect Food</button>
+
+<h2>Or Video URL (YT/TikTok)</h2>
+<input type="text" id="videoInput"/>
+<button onclick="submitVideo()">Detect Food</button>
+
+<script>
+async function uploadImage(){
+    const file = document.getElementById("fileInput").files[0];
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await fetch("http://localhost:8000/upload-image/", {method:"POST", body:formData});
+    const data = await res.json();
+    alert(JSON.stringify(data));
+}
+
+async function submitText(){
+    const description = document.getElementById("textInput").value;
+    const formData = new FormData();
+    formData.append("description", description);
+    const res = await fetch("http://localhost:8000/text-description/", {method:"POST", body:formData});
+    const data = await res.json();
+    alert(JSON.stringify(data));
+}
+
+async function submitVideo(){
+    const url = document.getElementById("videoInput").value;
+    const formData = new FormData();
+    formData.append("url", url);
+    const res = await fetch("http://localhost:8000/video-url/", {method:"POST", body:formData});
+    const data = await res.json();
+    alert(JSON.stringify(data));
+}
+</script>
+</body>
+</html>

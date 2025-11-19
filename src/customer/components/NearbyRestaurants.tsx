@@ -1,4 +1,4 @@
-import { MapPin, TrendingUp, Loader2 } from "lucide-react";
+import { MapPin, TrendingUp, Loader2, Navigation } from "lucide-react";
 import { useState, useEffect } from "react";
 import RestaurantCard from "./RestaurantCard";
 import { getCuisineImage } from "@/customer/lib/imageUtils";
@@ -8,87 +8,133 @@ import PLACEHOLDER_RESTAURANTS from "@/customer/lib/placeholders";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useToast } from "@/shared/hooks/use-toast";
+import { getNearestRestaurants, calculateDistance, getRestaurantByName } from "@/customer/lib/csvDataLoader";
+import { Button } from "@/shared/components/ui/button";
 
 const NearbyRestaurants = () => {
   const { toast } = useToast();
-  const [restaurants] = useState<any[]>([
-    {
-      name: "Bella Italia",
-      types: ["italian", "restaurant"],
-      rating: 4.5,
-      user_ratings_total: 234,
-      price_level: 2,
-      vicinity: "123 Main St, Downtown",
-      place_id: "1"
-    },
-    {
-      name: "Sushi Paradise",
-      types: ["japanese", "sushi"],
-      rating: 4.8,
-      user_ratings_total: 456,
-      price_level: 3,
-      vicinity: "456 Oak Ave, Midtown",
-      place_id: "2"
-    },
-    {
-      name: "Taco Fiesta",
-      types: ["mexican", "restaurant"],
-      rating: 4.3,
-      user_ratings_total: 189,
-      price_level: 1,
-      vicinity: "789 Pine Rd, East Side",
-      place_id: "3"
-    },
-    {
-      name: "The Burger Joint",
-      types: ["american", "burgers"],
-      rating: 4.6,
-      user_ratings_total: 312,
-      price_level: 2,
-      vicinity: "321 Elm St, West End",
-      place_id: "4"
-    },
-    {
-      name: "Dragon Wok",
-      types: ["chinese", "asian"],
-      rating: 4.4,
-      user_ratings_total: 267,
-      price_level: 2,
-      vicinity: "654 Maple Dr, North Side",
-      place_id: "5"
-    },
-    {
-      name: "Pizza Palace",
-      types: ["pizza", "italian"],
-      rating: 4.7,
-      user_ratings_total: 398,
-      price_level: 2,
-      vicinity: "987 Cedar Ln, South End",
-      place_id: "6"
-    },
-    {
-      name: "Thai Orchid",
-      types: ["thai", "asian"],
-      rating: 4.5,
-      user_ratings_total: 223,
-      price_level: 2,
-      vicinity: "159 Birch St, Central",
-      place_id: "7"
-    },
-    {
-      name: "Steakhouse Prime",
-      types: ["steakhouse", "american"],
-      rating: 4.9,
-      user_ratings_total: 512,
-      price_level: 4,
-      vicinity: "753 Walnut Ave, Uptown",
-      place_id: "8"
-    }
-  ]);
-  const [loading] = useState(false);
+  const [restaurants, setRestaurants] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [userLocation, setUserLocation] = useState<{ lat: number; lon: number } | null>(null);
+  const [locationError, setLocationError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const locationHook = useLocation();
+  
+  // Request user's geolocation
+  const requestLocation = () => {
+    if (!navigator.geolocation) {
+      setLocationError("Geolocation is not supported by your browser");
+      toast({
+        title: "Location unavailable",
+        description: "Your browser doesn't support geolocation",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setLoading(true);
+    setLocationError(null);
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setUserLocation({ lat: latitude, lon: longitude });
+        
+        // Get nearest 8 restaurants based on user location
+        const nearest = getNearestRestaurants(latitude, longitude, 8);
+        
+        // Map nearest restaurants and find their corresponding IDs from PLACEHOLDER_RESTAURANTS
+        setRestaurants(nearest.map((r) => {
+          const matchedRestaurant = PLACEHOLDER_RESTAURANTS.find(
+            pr => pr.name === r.name && pr.lat === r.latitude && pr.lon === r.longitude
+          );
+          
+          return {
+            name: r.name,
+            types: [r.cuisine.toLowerCase()],
+            rating: r.avgRating,
+            user_ratings_total: r.totalReviews,
+            price_level: r.priceRange.length,
+            vicinity: `${r.distance.toFixed(1)} mi away`,
+            place_id: matchedRestaurant?.id || `unknown-${r.name}`,
+            restaurantId: matchedRestaurant?.id, // Store the actual ID for navigation
+            lat: r.latitude,
+            lon: r.longitude,
+            distance: r.distance
+          };
+        }));
+        
+        setLoading(false);
+        toast({
+          title: "Location found!",
+          description: `Showing restaurants near you`,
+        });
+      },
+      (error) => {
+        setLoading(false);
+        let errorMessage = "Unable to get your location";
+        
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            errorMessage = "Location permission denied. Please enable location access.";
+            break;
+          case error.POSITION_UNAVAILABLE:
+            errorMessage = "Location information unavailable";
+            break;
+          case error.TIMEOUT:
+            errorMessage = "Location request timed out";
+            break;
+        }
+        
+        setLocationError(errorMessage);
+        toast({
+          title: "Location error",
+          description: errorMessage,
+          variant: "destructive",
+        });
+        
+        // Fallback to showing top 8 restaurants by rating
+        const topRestaurants = PLACEHOLDER_RESTAURANTS
+          .sort((a, b) => b.rating - a.rating)
+          .slice(0, 8);
+        
+        setRestaurants(topRestaurants.map((r) => ({
+          name: r.name,
+          types: [r.cuisine.toLowerCase()],
+          rating: r.rating,
+          user_ratings_total: r.reviewCount,
+          price_level: r.priceRange ? r.priceRange.length : 2,
+          vicinity: r.location || "Dallas, TX",
+          place_id: r.id, // Use the actual restaurant ID
+          restaurantId: r.id, // Store the actual ID for navigation
+          lat: r.lat,
+          lon: r.lon
+        })));
+      }
+    );
+  };
+  
+  // Load restaurants on mount
+  useEffect(() => {
+    // Show top restaurants by default
+    const topRestaurants = PLACEHOLDER_RESTAURANTS
+      .sort((a, b) => b.rating - a.rating)
+      .slice(0, 8);
+    
+    setRestaurants(topRestaurants.map((r) => ({
+      name: r.name,
+      types: [r.cuisine.toLowerCase()],
+      rating: r.rating,
+      user_ratings_total: r.reviewCount,
+      price_level: r.priceRange ? r.priceRange.length : 2,
+      vicinity: r.location || "Dallas, TX",
+      place_id: r.id, // Use the actual restaurant ID
+      restaurantId: r.id, // Store the actual ID for navigation
+      lat: r.lat,
+      lon: r.lon
+    })));
+  }, []);
 
   // helper: small fuzzy matcher (token overlap) used to pick a best matching placeholder restaurant
   const fuzzyScoreSimple = (a: string, b: string) => {
@@ -221,13 +267,41 @@ const NearbyRestaurants = () => {
       <div className="container mx-auto px-4 space-y-12">
         {/* Restaurants Near Me */}
         <div>
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
             <div>
               <h2 className="text-2xl md:text-3xl font-bold text-white drop-shadow-sm mb-2 flex items-center gap-2">
                 <MapPin className="h-6 w-6 text-primary" />
                 Restaurants Near You
               </h2>
-              <LocationDetector />
+              {userLocation && (
+                <p className="text-white/80 text-sm">
+                  Showing restaurants within {restaurants[0]?.distance ? `${restaurants[restaurants.length - 1]?.distance?.toFixed(1)} miles` : 'your area'}
+                </p>
+              )}
+              {locationError && (
+                <p className="text-red-300 text-sm">{locationError}</p>
+              )}
+            </div>
+            <div className="flex gap-2">
+              <Button 
+                onClick={requestLocation} 
+                disabled={loading}
+                variant="default"
+                size="lg"
+                className="bg-primary hover:bg-primary/90"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Getting location...
+                  </>
+                ) : (
+                  <>
+                    <Navigation className="h-4 w-4 mr-2" />
+                    {userLocation ? 'Update Location' : 'Use My Location'}
+                  </>
+                )}
+              </Button>
             </div>
           </div>
           
@@ -245,33 +319,99 @@ const NearbyRestaurants = () => {
                     tabIndex={0}
                     className="cursor-pointer"
                     onClick={async () => {
-                      const found = PLACEHOLDER_RESTAURANTS.find((r) => r.name.toLowerCase().includes(restaurant.name.toLowerCase()));
-                      const target = found ? `/restaurants/${found.id}` : `/restaurants?query=${encodeURIComponent(restaurant.name)}`;
-                      const { data: { session } } = await supabase.auth.getSession();
-                          if (found && found.id) {
-                            try {
-                              const raw = localStorage.getItem('recent_restaurants');
-                              const arr = raw ? JSON.parse(raw) : [];
-                              const filtered = arr.filter((id: string) => id !== found.id);
-                              filtered.unshift(found.id);
-                              localStorage.setItem('recent_restaurants', JSON.stringify(filtered.slice(0, 10)));
-                            } catch (e) {}
+                      // Use the exact restaurant ID we stored
+                      const restaurantId = restaurant.restaurantId || restaurant.place_id;
+                      
+                      if (!restaurantId || restaurantId.startsWith('unknown-')) {
+                        // Build a CSV-backed profile and open templated page
+                        try {
+                          const csv = getRestaurantByName(restaurant.name);
+                          if (csv) {
+                            const slug = encodeURIComponent(restaurant.name.toLowerCase().replace(/\s+/g, '-'));
+                            const profile = {
+                              name: csv.name,
+                              cuisine: csv.cuisine,
+                              lat: csv.latitude,
+                              lon: csv.longitude,
+                              location: restaurant.vicinity || 'Dallas, TX',
+                              rating: csv.avgRating,
+                              reviewCount: csv.totalReviews,
+                              priceRange: csv.priceRange,
+                              description: csv.dishes?.[0]?.description || '',
+                              menu: Array.from(new Set(csv.dishes.map(d => d.dish_name))),
+                              imageUrl: getCuisineImage(csv.cuisine),
+                            };
+                            localStorage.setItem(`csv_restaurant_profile:${slug}`, JSON.stringify(profile));
+                            const target = `/csv-restaurant/${slug}`;
+                            const { data: { session } } = await supabase.auth.getSession();
+                            if (session) navigate(target); else navigate(`/?force=true&redirect=${encodeURIComponent(target)}`);
+                            return;
                           }
-                          if (session) navigate(target); else navigate(`/?force=true&redirect=${encodeURIComponent(target)}`);
+                        } catch (e) {}
+                        // If CSV profile not found as well, show toast
+                        toast({ title: "Restaurant not found", description: "Unable to load restaurant details", variant: "destructive" });
+                        return;
+                      }
+                      
+                      const target = `/restaurants/${restaurantId}`;
+                      const { data: { session } } = await supabase.auth.getSession();
+                      
+                      // Save to recent restaurants
+                      try {
+                        const raw = localStorage.getItem('recent_restaurants');
+                        const arr = raw ? JSON.parse(raw) : [];
+                        const filtered = arr.filter((id: string) => id !== restaurantId);
+                        filtered.unshift(restaurantId);
+                        localStorage.setItem('recent_restaurants', JSON.stringify(filtered.slice(0, 10)));
+                      } catch (e) {}
+                      
+                      if (session) navigate(target); else navigate(`/?force=true&redirect=${encodeURIComponent(target)}`);
                     }}
                     onKeyDown={async (e) => { if (e.key === 'Enter') {
-                      const found = PLACEHOLDER_RESTAURANTS.find((r) => r.name.toLowerCase().includes(restaurant.name.toLowerCase()));
-                      const target = found ? `/restaurants/${found.id}` : `/restaurants?query=${encodeURIComponent(restaurant.name)}`;
-                      const { data: { session } } = await supabase.auth.getSession();
-                      if (found && found.id) {
+                      // Use the exact restaurant ID we stored
+                      const restaurantId = restaurant.restaurantId || restaurant.place_id;
+                      
+                      if (!restaurantId || restaurantId.startsWith('unknown-')) {
                         try {
-                          const raw = localStorage.getItem('recent_restaurants');
-                          const arr = raw ? JSON.parse(raw) : [];
-                          const filtered = arr.filter((id: string) => id !== found.id);
-                          filtered.unshift(found.id);
-                          localStorage.setItem('recent_restaurants', JSON.stringify(filtered.slice(0, 10)));
+                          const csv = getRestaurantByName(restaurant.name);
+                          if (csv) {
+                            const slug = encodeURIComponent(restaurant.name.toLowerCase().replace(/\s+/g, '-'));
+                            const profile = {
+                              name: csv.name,
+                              cuisine: csv.cuisine,
+                              lat: csv.latitude,
+                              lon: csv.longitude,
+                              location: restaurant.vicinity || 'Dallas, TX',
+                              rating: csv.avgRating,
+                              reviewCount: csv.totalReviews,
+                              priceRange: csv.priceRange,
+                              description: csv.dishes?.[0]?.description || '',
+                              menu: Array.from(new Set(csv.dishes.map(d => d.dish_name))),
+                              imageUrl: getCuisineImage(csv.cuisine),
+                            };
+                            localStorage.setItem(`csv_restaurant_profile:${slug}`, JSON.stringify(profile));
+                            const target = `/csv-restaurant/${slug}`;
+                            const { data: { session } } = await supabase.auth.getSession();
+                            if (session) navigate(target); else navigate(`/?force=true&redirect=${encodeURIComponent(target)}`);
+                            return;
+                          }
                         } catch (e) {}
+                        toast({ title: "Restaurant not found", description: "Unable to load restaurant details", variant: "destructive" });
+                        return;
                       }
+                      
+                      const target = `/restaurants/${restaurantId}`;
+                      const { data: { session } } = await supabase.auth.getSession();
+                      
+                      // Save to recent restaurants
+                      try {
+                        const raw = localStorage.getItem('recent_restaurants');
+                        const arr = raw ? JSON.parse(raw) : [];
+                        const filtered = arr.filter((id: string) => id !== restaurantId);
+                        filtered.unshift(restaurantId);
+                        localStorage.setItem('recent_restaurants', JSON.stringify(filtered.slice(0, 10)));
+                      } catch (e) {}
+                      
                       if (session) navigate(target); else navigate(`/?force=true&redirect=${encodeURIComponent(target)}`);
                     } }}
                   >

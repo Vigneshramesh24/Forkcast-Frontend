@@ -1,6 +1,6 @@
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
-import { Search } from "lucide-react";
+import { Search, Sparkles, DollarSign, MapPin, Star } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PLACEHOLDER_RESTAURANTS, { Restaurant } from "@/customer/lib/placeholders";
@@ -8,6 +8,7 @@ import { tokenize, matchesRestaurant } from "@/customer/lib/searchUtils";
 
 const Hero = () => {
   const navigate = useNavigate();
+  const SUGGESTION_KEY = 'forkcast_ai_last_suggestion';
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Restaurant[]>([]);
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
@@ -15,6 +16,17 @@ const Hero = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const listRef = useRef<HTMLDivElement | null>(null);
   const [cuisine, setCuisine] = useState<string>("");
+  const [analyzing, setAnalyzing] = useState(false);
+  const [topRec, setTopRec] = useState<Restaurant | null>(null);
+  const [aiMatches, setAiMatches] = useState<Restaurant[]>([]);
+  const [aiDish, setAiDish] = useState<string>("");
+
+  // When results are ready, scroll results section into view
+  useEffect(() => {
+    if (!analyzing && (topRec || aiMatches.length > 0 || results.length > 0)) {
+      listRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [analyzing, topRec, aiMatches.length, results.length]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowDown") {
@@ -57,24 +69,12 @@ const Hero = () => {
   };
 
   const doSearch = () => {
-    const q = query.trim().toLowerCase();
-    if (!q) {
-      setResults([]);
-      return;
-    }
-    // tokenized + fuzzy matching: use searchUtils.matchesRestaurant
-    const tokens = tokenize(q);
-    const matched = PLACEHOLDER_RESTAURANTS.filter((r) => {
-      const matchesCuisine = cuisine ? r.cuisine.toLowerCase() === cuisine.toLowerCase() : true;
-      const matchedText = matchesRestaurant(tokens, r);
-      return matchesCuisine && matchedText;
-    });
-    setResults(matched);
-    // navigate to Restaurants page with query so results persist across pages
-    const params = new URLSearchParams();
-    params.set("query", q);
-    if (cuisine) params.set("cuisine", cuisine);
-    navigate(`/restaurants?${params.toString()}`);
+    const qRaw = query.trim();
+    if (!qRaw) return;
+    // Immediately navigate to the results page; it will call the backend and render progressively
+    const p = new URLSearchParams();
+    p.set('input', qRaw);
+    navigate(`/search?${p.toString()}`);
   };
 
   // cleanup on unmount
@@ -179,7 +179,7 @@ const Hero = () => {
             )}
           </div>
 
-          <Button size="lg" className="bg-primary hover:bg-primary/90 md:w-auto w-full" onClick={doSearch}>
+          <Button size="lg" className="bg-primary hover:bg-primary/90 md:w-auto w-full" onClick={doSearch} disabled={analyzing}>
             <Search className="h-5 w-5 md:mr-2" />
             <span className="hidden md:inline">Search</span>
           </Button>
@@ -224,23 +224,66 @@ const Hero = () => {
       </div>
 
         {/* Search results (placeholder) */}
-      <div className="relative container mx-auto px-4 mt-6 max-w-3xl">
-        {results.length > 0 ? (
+  <div ref={listRef} className="relative container mx-auto px-4 mt-6 max-w-3xl space-y-4">
+        {analyzing && (
+          <div className="text-center py-6 text-white">
+            <Sparkles className="h-6 w-6 mx-auto mb-2 text-primary animate-pulse" />
+            Analyzing...
+          </div>
+        )}
+
+        {aiDish && !analyzing && (
+          <div className="text-center text-white/90">
+            Detected: <span className="font-semibold">{aiDish}</span>
+          </div>
+        )}
+
+        {topRec && (
+          <div className="space-y-2">
+            <h4 className="text-white font-semibold">Top recommendation</h4>
+            <button
+              className="w-full text-left bg-white rounded-lg shadow p-4 hover:shadow-md transition"
+              onClick={() => navigate(`/restaurants/${topRec.id}`)}
+            >
+              <div className="flex items-start justify-between">
+                <div>
+                  <div className="font-semibold">{topRec.name}</div>
+                  <div className="text-sm text-muted-foreground">{topRec.cuisine}</div>
+                  <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1"><Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />{topRec.rating.toFixed(1)}</span>
+                    <span className="flex items-center gap-1"><MapPin className="h-4 w-4" />Nearby</span>
+                  </div>
+                </div>
+                <div className="text-xs text-muted-foreground max-w-[50%] line-clamp-3">{topRec.description}</div>
+              </div>
+            </button>
+          </div>
+        )}
+
+        {aiMatches.length > 0 && (
+          <div className="space-y-2">
+            <h4 className="text-white font-semibold">Best matches near you</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {aiMatches.map((r) => (
+                <button key={r.id} className="bg-white rounded-lg shadow p-4 text-left hover:shadow-md" onClick={() => navigate(`/restaurants/${r.id}`)}>
+                  <div className="font-semibold">{r.name}</div>
+                  <div className="text-sm text-muted-foreground">{r.cuisine} • {r.description}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Fallback: local results only if no AI results */}
+        {aiMatches.length === 0 && !topRec && results.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {results.map((r) => (
-              <div key={r.id} className="bg-white rounded-lg shadow p-4">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <div className="font-semibold">{r.name}</div>
-                    <div className="text-sm text-muted-foreground">{r.cuisine} • {r.description}</div>
-                  </div>
-                  <div className="text-xs text-muted-foreground">{r.menu.join(", ")}</div>
-                </div>
-              </div>
+              <button key={r.id} className="bg-white rounded-lg shadow p-4 text-left hover:shadow-md" onClick={() => navigate(`/restaurants/${r.id}`)}>
+                <div className="font-semibold">{r.name}</div>
+                <div className="text-sm text-muted-foreground">{r.cuisine} • {r.description}</div>
+              </button>
             ))}
           </div>
-        ) : (
-          query && <div className="text-sm text-muted-foreground">No restaurants found for "{query}"</div>
         )}
       </div>
     </section>

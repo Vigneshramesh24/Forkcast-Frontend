@@ -1,0 +1,415 @@
+dish_name,restaurant,price,cuisine,description,food_type,latitude,longitude,rating
+Tres Leches Cake,Mi Cocina - Highland Park,10.64,Mexican,Soaked sponge cake,dessert,32.8357735,-96.8060517,4.24
+Beef Fajitas,Mi Cocina - Highland Park,41.62,Mexican,"Grilled skirt steak, peppers, onions",entree,32.8357735,-96.8060517,4.53
+Chicken Enchiladas Verdes,Mi Cocina - Highland Park,38.24,Mexican,"Tomatillo sauce, queso fresco",entree,32.8357735,-96.8060517,3.5
+Chicken Tortilla Soup,Mi Cocina - Highland Park,11.07,Mexican,"Tomato-chile broth, tortilla strips",soup,32.8357735,-96.8060517,4.63
+Queso & Chips,Mi Cocina - Highland Park,9.04,Mexican,"Melted cheese dip, tortilla chips",appetizer,32.8357735,-96.8060517,4.3
+Horchata,El Fenix Downtown,5.68,Mexican,Cinnamon rice drink,beverage,32.787446,-96.8048645,4.95
+Queso & Chips,El Fenix Downtown,11.61,Mexican,"Melted cheese dip, tortilla chips",appetizer,32.787446,-96.8048645,4.42
+Beef Fajitas,El Fenix Downtown,33.77,Mexican,"Grilled skirt steak, peppers, onions",entree,32.787446,-96.8048645,4.11
+Chicken Tortilla Soup,El Fenix Downtown,5.5,Mexican,"Tomato-chile broth, tortilla strips",soup,32.787446,-96.8048645,4.36
+Tres Leches Cake,El Fenix Downtown,9.81,Mexican,Soaked sponge cake,dessert,32.787446,-96.8048645,4.41
+Chicken Enchiladas Verdes,El Fenix Downtown,29.89,Mexican,"Tomatillo sauce, queso fresco",entree,32.787446,-96.8048645,4.18
+Beef Fajitas,Javier's Gourmet Mexicano,41.73,Mexican,"Grilled skirt steak, peppers, onions",entree,32.8280791,-96.78602149999999,4.03
+Chicken Tortilla Soup,Javier's Gourmet Mexicano,9.48,Mexican,"Tomato-chile broth, tortilla strips",soup,32.8280791,-96.78602149999999,3.66
+Tres Leches Cake,Javier's Gourmet Mexicano,9.34,Mexican,Soaked sponge cake,dessert,32.8280791,-96.78602149999999,4.46
+Horchata,Javier's Gourmet Mexicano,5.74,Mexican,Cinnamon rice drink,beverage,32.8280791,-96.78602149999999,4.56
+Beef Fajitas,E Bar Tex Mex,26.43,Mexican,"Grilled skirt steak, peppers, onions",entree,32.8014142,-96.7857485,3.97
+Chicken Enchiladas Verdes,E Bar Tex Mex,17.72,Mexican,"Tomatillo sauce, queso fresco",entree,32.8014142,-96.7857485,3.63
+Queso & Chips,E Bar Tex Mex,13.31,Mexican,"Melted cheese dip, tortilla chips",appetizer,32.8014142,-96.7857485,3.56
+Beef Fajitas,Meso Maya,19.71,Mexican,"Grilled skirt steak, peppers, onions",entree,32.787751,-96.8047241,4.84
+Chicken Tortilla Soup,Meso Maya,5.98,Mexican,"Tomato-chile broth, tortilla strips",soup,32.787751,-96.8047241,4.94
+Tres Leches Cake,Meso Maya,10.47,Mexican,Soaked sponge cake,dessert,32.787751,-96.8047241,3.75
+Queso & Chips,Meso Maya,10.31,Mexican,"Melted cheese dip, tortilla chips",appetizer,32.787751,-96.8047241,3.7
+Horchata,Meso Maya,5.99,Mexican,Cinnamon rice drink,beverage,32.787751,-96.8047241,3.73
+Tamal de Pollo,Gloria's Latin Cuisine - Bishop Arts,21.7,Salvadoran & Tex‑Mex,"Steamed corn masa, chicken",entree,32.7497011,-96.8275667,3.77
+Yuca Frita,Gloria's Latin Cuisine - Bishop Arts,9.99,Salvadoran & Tex‑Mex,Fried cassava,side,32.7497011,-96.8275667,4.57
+Pupusa Revuelta,Gloria's Latin Cuisine - Bishop Arts,29.25,Salvadoran & Tex‑Mex,"Pork, cheese & beans",entree,32.7497011,-96.8275667,3.89
+Spicy Tikka Chicken Taco,Velvet Taco - Henderson,5.51,Tacos,"Chicken, tikka sauce, crema",taco,32.783816,-96.78676379999999,4.35
+Churros,Velvet Taco - Henderson,10.75,Tacos,Cinnamon-sugar dough sticks,dessert,32.783816,-96.78676379999999,4.65
+Elote Corn,Velvet Taco - Henderson,6.53,Tacos,Street corn with cotija,side,32.783816,-96.78676379999999,4.41
+Elote Corn,La Ventana - Downtown,9.98,Tacos,Street corn with cotija,side,32.7778412,-96.78977069999999,3.75
+Churros,La Ventana - Downtown,9.17,Tacos,Cinnamon-sugar dough sticks,dessert,32.7778412,-96.78977069999999,4.01
+Baja Fish Taco,La Ventana - Downtown,6.88,Tacos,"Fried fish, cabbage, crema",taco,32.7778412,-96.78977069999999,4.77
+Baja Fish Taco,Tacodeli - Dallas,4.95,Tacos,"Fried fish, cabbage, crema",taco,32.7693063,-96.8355318,4.2
+Spicy Tikka Chicken Taco,Tacodeli - Dallas,4.42,Tacos,"Chicken, tikka sauce, crema",taco,32.7693063,-96.8355318,4.46
+Buffalo Chicken Taco,Tacodeli - Dallas,4.03,Tacos,"Buffalo sauce, ranch slaw",taco,32.7693063,-96.8355318,4.8
+Churros,Tacodeli - Dallas,7.68,Tacos,Cinnamon-sugar dough sticks,dessert,32.7693063,-96.8355318,4.39
+Elote Corn,Tacodeli - Dallas,7.58,Tacos,Street corn with cotija,side,32.7693063,-96.8355318,4.06
+Churros,Torchy's Tacos - Dallas,7.45,Tacos,Cinnamon-sugar dough sticks,dessert,32.9100751,-96.805914,4.49
+Spicy Tikka Chicken Taco,Torchy's Tacos - Dallas,4.63,Tacos,"Chicken, tikka sauce, crema",taco,32.9100751,-96.805914,4.61
+Baja Fish Taco,Torchy's Tacos - Dallas,5.22,Tacos,"Fried fish, cabbage, crema",taco,32.9100751,-96.805914,4.1
+Elote Corn,Torchy's Tacos - Dallas,5.44,Tacos,Street corn with cotija,side,32.9100751,-96.805914,4.98
+Buffalo Chicken Taco,Torchy's Tacos - Dallas,4.9,Tacos,"Buffalo sauce, ranch slaw",taco,32.9100751,-96.805914,3.74
+Elote Corn,El Come Taco,6.43,Tacos,Street corn with cotija,side,32.8123093,-96.7838025,4.72
+Spicy Tikka Chicken Taco,El Come Taco,3.97,Tacos,"Chicken, tikka sauce, crema",taco,32.8123093,-96.7838025,4.4
+Churros,El Come Taco,9.98,Tacos,Cinnamon-sugar dough sticks,dessert,32.8123093,-96.7838025,4.67
+Buffalo Chicken Taco,El Come Taco,4.48,Tacos,"Buffalo sauce, ranch slaw",taco,32.8123093,-96.7838025,3.62
+Baja Fish Taco,El Come Taco,5.21,Tacos,"Fried fish, cabbage, crema",taco,32.8123093,-96.7838025,3.99
+Chicken Enchiladas Verdes,Jose,20.67,Mexican,"Tomatillo sauce, queso fresco",entree,32.8514433,-96.8256007,3.62
+Beef Fajitas,Jose,16.37,Mexican,"Grilled skirt steak, peppers, onions",entree,32.8514433,-96.8256007,4.6
+Queso & Chips,Jose,10.27,Mexican,"Melted cheese dip, tortilla chips",appetizer,32.8514433,-96.8256007,3.67
+Horchata,Jose,4.1,Mexican,Cinnamon rice drink,beverage,32.8514433,-96.8256007,4.56
+Tres Leches Cake,Jose,11.85,Mexican,Soaked sponge cake,dessert,32.8514433,-96.8256007,4.3
+Brisket Plate,Pecan Lodge,18.94,Barbecue,Smoked brisket with pickles & onions,bbq_plate,32.7837281,-96.7838452,3.94
+Coleslaw,Pecan Lodge,4.84,Barbecue,Shredded cabbage slaw,side,32.7837281,-96.7838452,4.36
+Jalapeño Cheddar Sausage,Pecan Lodge,17.23,Barbecue,House-made link,bbq_plate,32.7837281,-96.7838452,3.51
+Banana Pudding,Cattleack Barbeque,6.56,Barbecue,Classic vanilla wafer pudding,dessert,32.9346701,-96.8362592,3.81
+Brisket Plate,Cattleack Barbeque,18.79,Barbecue,Smoked brisket with pickles & onions,bbq_plate,32.9346701,-96.8362592,3.66
+Sweet Tea,Cattleack Barbeque,5.41,Barbecue,House-brewed sweet tea,beverage,32.9346701,-96.8362592,4.32
+Banana Pudding,Terry Black's Barbecue,7.67,Barbecue,Classic vanilla wafer pudding,dessert,32.7848915,-96.7799081,3.78
+Pork Rib Plate,Terry Black's Barbecue,26.43,Barbecue,Dry-rub St. Louis ribs,bbq_plate,32.7848915,-96.7799081,4.52
+Three-Meat Combo,Terry Black's Barbecue,25.11,Barbecue,Choice of 3 meats,bbq_plate,32.7848915,-96.7799081,3.69
+Mac & Cheese,Terry Black's Barbecue,4.96,Barbecue,Creamy cheddar mac,side,32.7848915,-96.7799081,3.56
+Coleslaw,Hurtado Barbecue - Dallas,4.56,Barbecue,Shredded cabbage slaw,side,32.7779085,-96.7905198,3.77
+Jalapeño Cheddar Sausage,Hurtado Barbecue - Dallas,17.16,Barbecue,House-made link,bbq_plate,32.7779085,-96.7905198,3.83
+Pork Rib Plate,Hurtado Barbecue - Dallas,26.17,Barbecue,Dry-rub St. Louis ribs,bbq_plate,32.7779085,-96.7905198,4.9
+Sweet Tea,Hurtado Barbecue - Dallas,5.41,Barbecue,House-brewed sweet tea,beverage,32.7779085,-96.7905198,4.47
+Banana Pudding,Hurtado Barbecue - Dallas,10.84,Barbecue,Classic vanilla wafer pudding,dessert,32.7779085,-96.7905198,4.91
+Brisket Plate,Hurtado Barbecue - Dallas,24.76,Barbecue,Smoked brisket with pickles & onions,bbq_plate,32.7779085,-96.7905198,4.94
+Banana Pudding,Slow Bone,7.76,Barbecue,Classic vanilla wafer pudding,dessert,32.796284,-96.83419130000001,3.76
+Brisket Plate,Slow Bone,23.54,Barbecue,Smoked brisket with pickles & onions,bbq_plate,32.796284,-96.83419130000001,4.69
+Mac & Cheese,Slow Bone,9.31,Barbecue,Creamy cheddar mac,side,32.796284,-96.83419130000001,4.78
+Grilled Salmon,Smoky Rose,38.09,Barbecue & American,Lemon herb butter,entree,32.8230587,-96.7143949,4.3
+House Salad,Smoky Rose,16.4,Barbecue & American,"Greens, vinaigrette",salad,32.8230587,-96.7143949,4.6
+Tomato Basil Soup,Smoky Rose,5.74,Barbecue & American,Comfort soup,soup,32.8230587,-96.7143949,4.18
+Coleslaw,Lockhart Smokehouse - Bishop Arts,5.73,Barbecue,Shredded cabbage slaw,side,32.7493058,-96.8285861,3.56
+Three-Meat Combo,Lockhart Smokehouse - Bishop Arts,27.34,Barbecue,Choice of 3 meats,bbq_plate,32.7493058,-96.8285861,3.84
+Sweet Tea,Lockhart Smokehouse - Bishop Arts,6.25,Barbecue,House-brewed sweet tea,beverage,32.7493058,-96.8285861,3.98
+Banana Pudding,Lockhart Smokehouse - Bishop Arts,9.3,Barbecue,Classic vanilla wafer pudding,dessert,32.7493058,-96.8285861,3.74
+Matcha Ice Cream,Uchi Dallas,9.9,Japanese,Green tea ice cream,dessert,32.7968652,-96.8065259,4.64
+Salmon Nigiri,Uchi Dallas,6.19,Japanese,Fresh salmon over rice,sushi,32.7968652,-96.8065259,4.29
+Tonkotsu Ramen,Uchi Dallas,15.62,Japanese,"Pork broth, noodles, egg",noodle,32.7968652,-96.8065259,4.87
+Miso Soup,Uchi Dallas,5.85,Japanese,"Dashi, tofu, wakame",soup,32.7968652,-96.8065259,3.59
+Hamachi Crudo,Tei‑An,10.43,Japanese,"Yellowtail, yuzu, chili",appetizer,32.792057,-96.79550470000001,4.07
+Salmon Nigiri,Tei‑An,6.94,Japanese,Fresh salmon over rice,sushi,32.792057,-96.79550470000001,4.59
+Matcha Ice Cream,Tei‑An,6.04,Japanese,Green tea ice cream,dessert,32.792057,-96.79550470000001,3.95
+Miso Soup,Tei‑An,9.95,Japanese,"Dashi, tofu, wakame",soup,32.792057,-96.79550470000001,3.86
+Spicy Tuna Roll,Sushi Sake,8.3,Japanese,"Tuna, chili mayo",sushi,32.978199,-96.71737999999999,3.53
+Hamachi Crudo,Sushi Sake,6.57,Japanese,"Yellowtail, yuzu, chili",appetizer,32.978199,-96.71737999999999,4.65
+Miso Soup,Sushi Sake,6.67,Japanese,"Dashi, tofu, wakame",soup,32.978199,-96.71737999999999,4.03
+Spicy Tuna Roll,Oishii,7.92,Japanese,"Tuna, chili mayo",sushi,32.8103797,-96.8198431,4.16
+Miso Soup,Oishii,10.65,Japanese,"Dashi, tofu, wakame",soup,32.8103797,-96.8198431,4.59
+Matcha Ice Cream,Oishii,7.14,Japanese,Green tea ice cream,dessert,32.8103797,-96.8198431,3.62
+Salmon Nigiri,Oishii,4.48,Japanese,Fresh salmon over rice,sushi,32.8103797,-96.8198431,4.94
+Tonkotsu Ramen,Oishii,15.02,Japanese,"Pork broth, noodles, egg",noodle,32.8103797,-96.8198431,3.97
+Hamachi Crudo,Oishii,9.39,Japanese,"Yellowtail, yuzu, chili",appetizer,32.8103797,-96.8198431,4.6
+Matcha Ice Cream,Nobu Dallas,10.8,Japanese,Green tea ice cream,dessert,32.7941945,-96.80399349999999,4.84
+Hamachi Crudo,Nobu Dallas,6.87,Japanese,"Yellowtail, yuzu, chili",appetizer,32.7941945,-96.80399349999999,4.25
+Miso Soup,Nobu Dallas,6.34,Japanese,"Dashi, tofu, wakame",soup,32.7941945,-96.80399349999999,4.54
+Tonkotsu Ramen,Nobu Dallas,15.75,Japanese,"Pork broth, noodles, egg",noodle,32.7941945,-96.80399349999999,4.84
+Spicy Tuna Roll,Nobu Dallas,4.7,Japanese,"Tuna, chili mayo",sushi,32.7941945,-96.80399349999999,4.07
+Salmon Nigiri,Nobu Dallas,4.92,Japanese,Fresh salmon over rice,sushi,32.7941945,-96.80399349999999,3.78
+Scallion Pancake,Royal China,8.92,Chinese,Crispy layered bread,appetizer,32.8960769,-96.8021275,4.92
+Mapo Tofu,Royal China,40.26,Chinese,"Tofu, chili bean sauce",entree,32.8960769,-96.8021275,4.41
+Soup Dumplings (XLB),Royal China,13.78,Chinese,Pork-filled steamed dumplings,appetizer,32.8960769,-96.8021275,3.87
+Hot & Sour Soup,Royal China,5.28,Chinese,Classic Chinese soup,soup,32.8960769,-96.8021275,4.63
+Mapo Tofu,Monkey King Noodle Co.,36.28,Chinese,"Tofu, chili bean sauce",entree,32.7845357,-96.7808025,4.6
+Hot & Sour Soup,Monkey King Noodle Co.,11.19,Chinese,Classic Chinese soup,soup,32.7845357,-96.7808025,4.41
+Kung Pao Chicken,Monkey King Noodle Co.,26.57,Chinese,"Chiles, peanuts",entree,32.7845357,-96.7808025,3.5
+Soup Dumplings (XLB),Monkey King Noodle Co.,10.97,Chinese,Pork-filled steamed dumplings,appetizer,32.7845357,-96.7808025,4.68
+Scallion Pancake,Monkey King Noodle Co.,7.24,Chinese,Crispy layered bread,appetizer,32.7845357,-96.7808025,4.11
+Bánh Mì Thịt,Mai's Vietnamese Restaurant,11.43,Vietnamese,Pork sandwich,sandwich,32.8033743,-96.7737088,4.55
+Phở Tái,Mai's Vietnamese Restaurant,18.47,Vietnamese,Beef noodle soup,noodle,32.8033743,-96.7737088,4.26
+Cà Phê Sữa Đá,Mai's Vietnamese Restaurant,6.13,Vietnamese,Iced coffee w/ milk,beverage,32.8033743,-96.7737088,4.94
+Gỏi Cuốn (Spring Rolls),Mai's Vietnamese Restaurant,9.29,Vietnamese,"Shrimp, herbs, peanut sauce",appetizer,32.8033743,-96.7737088,4.8
+Three Cup Chicken,Jeng Chi,36.47,Taiwanese & Chinese,"Soy, rice wine, basil",entree,32.9533808,-96.72770679999999,4.06
+Beef Noodle Soup,Jeng Chi,12.76,Taiwanese & Chinese,"Rich broth, noodles",noodle,32.9533808,-96.72770679999999,3.64
+Laab,Khao Noodle Shop (Legacy),10.8,Lao,Herb‑lime minced meat salad,salad,32.8032915,-96.7738131,3.71
+Khao Soi Lao,Khao Noodle Shop (Legacy),18.43,Lao,Curry noodle soup,noodle,32.8032915,-96.7738131,3.53
+Kung Pao Chicken,Sichuan King,26.36,Chinese,"Chiles, peanuts",entree,32.9531441,-96.7276574,4.38
+Mapo Tofu,Sichuan King,23.24,Chinese,"Tofu, chili bean sauce",entree,32.9531441,-96.7276574,3.61
+Soup Dumplings (XLB),Sichuan King,6.56,Chinese,Pork-filled steamed dumplings,appetizer,32.9531441,-96.7276574,4.97
+Hot & Sour Soup,Sichuan King,10.41,Chinese,Classic Chinese soup,soup,32.9531441,-96.7276574,4.97
+Scallion Pancake,Sichuan King,8.81,Chinese,Crispy layered bread,appetizer,32.9531441,-96.7276574,3.93
+LA Galbi,Korea House,16.15,Korean,Grilled short ribs,entree,32.8954716,-96.89195649999999,4.64
+Kimchi Jjigae,Korea House,7.46,Korean,Kimchi stew,soup,32.8954716,-96.89195649999999,4.18
+Bibimbap,Korea House,35.59,Korean,Rice bowl with toppings,entree,32.8954716,-96.89195649999999,3.76
+Pickled Radish,bb.q Chicken - Dallas,5.32,Korean Fried Chicken,Crunchy side,side,32.8124886,-96.7704182,3.95
+Soy Garlic Wings,bb.q Chicken - Dallas,27.33,Korean Fried Chicken,Double-fried wings,entree,32.8124886,-96.7704182,4.41
+Spicy Hot Wings,bb.q Chicken - Dallas,16.75,Korean Fried Chicken,Gochujang glaze,entree,32.8124886,-96.7704182,3.86
+Tomato Basil Soup,LA Burger - Carrollton/Dallas,10.88,Korean‑American,Comfort soup,soup,32.9848253,-96.90831899999999,4.04
+House Salad,LA Burger - Carrollton/Dallas,17.28,Korean‑American,"Greens, vinaigrette",salad,32.9848253,-96.90831899999999,5.0
+Grilled Salmon,LA Burger - Carrollton/Dallas,41.5,Korean‑American,Lemon herb butter,entree,32.9848253,-96.90831899999999,4.78
+Spicy Tuna Roll,Sushi Robata,6.27,Japanese,"Tuna, chili mayo",sushi,32.9992369,-96.82630170000002,3.52
+Hamachi Crudo,Sushi Robata,8.7,Japanese,"Yellowtail, yuzu, chili",appetizer,32.9992369,-96.82630170000002,4.24
+Salmon Nigiri,Sushi Robata,8.4,Japanese,Fresh salmon over rice,sushi,32.9992369,-96.82630170000002,3.74
+Matcha Ice Cream,Sushi Robata,7.67,Japanese,Green tea ice cream,dessert,32.9992369,-96.82630170000002,3.53
+Tonkotsu Ramen,Sushi Robata,18.66,Japanese,"Pork broth, noodles, egg",noodle,32.9992369,-96.82630170000002,4.48
+Miso Soup,Sushi Robata,7.95,Japanese,"Dashi, tofu, wakame",soup,32.9992369,-96.82630170000002,3.77
+Tonkotsu Ramen,Tei Tei Robata,19.0,Japanese,"Pork broth, noodles, egg",noodle,32.8203388,-96.7846113,4.57
+Hamachi Crudo,Tei Tei Robata,8.8,Japanese,"Yellowtail, yuzu, chili",appetizer,32.8203388,-96.7846113,4.31
+Miso Soup,Tei Tei Robata,9.55,Japanese,"Dashi, tofu, wakame",soup,32.8203388,-96.7846113,4.68
+Miso Soup,Kazy's Gourmet Shop,11.36,Japanese,"Dashi, tofu, wakame",soup,32.9134015,-96.7400991,4.64
+Matcha Ice Cream,Kazy's Gourmet Shop,7.78,Japanese,Green tea ice cream,dessert,32.9134015,-96.7400991,4.26
+Spicy Tuna Roll,Kazy's Gourmet Shop,6.94,Japanese,"Tuna, chili mayo",sushi,32.9134015,-96.7400991,4.35
+Salmon Nigiri,Kazy's Gourmet Shop,6.14,Japanese,Fresh salmon over rice,sushi,32.9134015,-96.7400991,4.26
+Tonkotsu Ramen,Kazy's Gourmet Shop,15.98,Japanese,"Pork broth, noodles, egg",noodle,32.9134015,-96.7400991,4.75
+Hamachi Crudo,Kazy's Gourmet Shop,6.48,Japanese,"Yellowtail, yuzu, chili",appetizer,32.9134015,-96.7400991,4.13
+Bánh Mì Thịt,Pho Pasteur - Dallas,12.12,Vietnamese,Pork sandwich,sandwich,32.9438259,-96.70146369999999,4.93
+Gỏi Cuốn (Spring Rolls),Pho Pasteur - Dallas,6.65,Vietnamese,"Shrimp, herbs, peanut sauce",appetizer,32.9438259,-96.70146369999999,3.98
+Phở Tái,Pho Pasteur - Dallas,13.68,Vietnamese,Beef noodle soup,noodle,32.9438259,-96.70146369999999,4.94
+Bibimbap,Ddong Ggo - Dallas,34.19,Korean,Rice bowl with toppings,entree,32.985993,-96.9125435,4.3
+Kimchi Jjigae,Ddong Ggo - Dallas,11.6,Korean,Kimchi stew,soup,32.985993,-96.9125435,3.56
+LA Galbi,Ddong Ggo - Dallas,29.01,Korean,Grilled short ribs,entree,32.985993,-96.9125435,4.17
+Chile Goat Burger,Rodeo Goat - Dallas,10.4,Burgers,"Green chile, queso",sandwich,32.7972031,-96.8239998,4.86
+Classic Cheeseburger,Rodeo Goat - Dallas,17.99,Burgers,"Beef patty, cheese, lettuce, tomato",sandwich,32.7972031,-96.8239998,4.19
+Milkshake,Rodeo Goat - Dallas,6.34,Burgers,Thick vanilla shake,beverage,32.7972031,-96.8239998,3.97
+Truffle Fries,Rodeo Goat - Dallas,9.81,Burgers,"Crispy fries, truffle oil",side,32.7972031,-96.8239998,4.1
+Chile Goat Burger,Keller's Drive-In,11.71,Burgers,"Green chile, queso",sandwich,32.8689598,-96.88208829999999,4.04
+Milkshake,Keller's Drive-In,4.6,Burgers,Thick vanilla shake,beverage,32.8689598,-96.88208829999999,3.8
+Truffle Fries,Keller's Drive-In,4.35,Burgers,"Crispy fries, truffle oil",side,32.8689598,-96.88208829999999,4.08
+Classic Cheeseburger,Keller's Drive-In,13.03,Burgers,"Beef patty, cheese, lettuce, tomato",sandwich,32.8689598,-96.88208829999999,3.76
+Truffle Fries,Off-Site Kitchen (Legacy),8.18,Burgers,"Crispy fries, truffle oil",side,32.7787503,-96.8292367,3.63
+Chile Goat Burger,Off-Site Kitchen (Legacy),15.84,Burgers,"Green chile, queso",sandwich,32.7787503,-96.8292367,4.97
+Milkshake,Off-Site Kitchen (Legacy),6.13,Burgers,Thick vanilla shake,beverage,32.7787503,-96.8292367,4.83
+Classic Cheeseburger,Off-Site Kitchen (Legacy),15.29,Burgers,"Beef patty, cheese, lettuce, tomato",sandwich,32.7787503,-96.8292367,4.61
+Chile Goat Burger,Hopdoddy - Dallas,17.75,Burgers,"Green chile, queso",sandwich,32.8042444,-96.79973009999999,4.34
+Classic Cheeseburger,Hopdoddy - Dallas,14.63,Burgers,"Beef patty, cheese, lettuce, tomato",sandwich,32.8042444,-96.79973009999999,4.16
+Milkshake,Hopdoddy - Dallas,5.17,Burgers,Thick vanilla shake,beverage,32.8042444,-96.79973009999999,4.57
+Truffle Fries,Hopdoddy - Dallas,8.49,Burgers,"Crispy fries, truffle oil",side,32.8042444,-96.79973009999999,3.98
+Classic Cheeseburger,Shake Shack - Dallas,14.02,Burgers,"Beef patty, cheese, lettuce, tomato",sandwich,32.7934617,-96.80312830000001,3.7
+Truffle Fries,Shake Shack - Dallas,9.12,Burgers,"Crispy fries, truffle oil",side,32.7934617,-96.80312830000001,3.81
+Chile Goat Burger,Shake Shack - Dallas,11.26,Burgers,"Green chile, queso",sandwich,32.7934617,-96.80312830000001,4.82
+Filet Mignon 8oz,Town Hearth,17.77,Steakhouse,Center‑cut tenderloin,entree,32.7923379,-96.82214259999999,3.98
+Prime Ribeye 14oz,Town Hearth,38.41,Steakhouse,"USDA Prime, grilled",entree,32.7923379,-96.82214259999999,4.42
+Caesar Salad,Town Hearth,12.63,Steakhouse,"Romaine, parmesan, croutons",salad,32.7923379,-96.82214259999999,4.85
+Crème Brûlée,Al Biernat's - Oak Lawn,8.52,Steakhouse,Vanilla custard,dessert,32.8203061,-96.8026735,4.75
+Prime Ribeye 14oz,Al Biernat's - Oak Lawn,31.18,Steakhouse,"USDA Prime, grilled",entree,32.8203061,-96.8026735,4.57
+Caesar Salad,Al Biernat's - Oak Lawn,13.71,Steakhouse,"Romaine, parmesan, croutons",salad,32.8203061,-96.8026735,4.75
+Lobster Mac,Al Biernat's - Oak Lawn,9.61,Steakhouse,"Four-cheese, lobster",side,32.8203061,-96.8026735,3.7
+Caesar Salad,Nick & Sam's,10.18,Steakhouse,"Romaine, parmesan, croutons",salad,32.7984933,-96.8074407,3.63
+Filet Mignon 8oz,Nick & Sam's,32.78,Steakhouse,Center‑cut tenderloin,entree,32.7984933,-96.8074407,3.6
+Lobster Mac,Nick & Sam's,6.74,Steakhouse,"Four-cheese, lobster",side,32.7984933,-96.8074407,4.54
+Crème Brûlée,Nick & Sam's,11.57,Steakhouse,Vanilla custard,dessert,32.7984933,-96.8074407,4.5
+Prime Ribeye 14oz,Knife Dallas,41.96,Steakhouse,"USDA Prime, grilled",entree,32.8359912,-96.7781674,4.7
+Lobster Mac,Knife Dallas,9.98,Steakhouse,"Four-cheese, lobster",side,32.8359912,-96.7781674,4.7
+Caesar Salad,Knife Dallas,9.66,Steakhouse,"Romaine, parmesan, croutons",salad,32.8359912,-96.7781674,4.36
+Seasonal Soup,Fearing's Restaurant,11.53,New American,Chef’s selection,soup,32.792157,-96.803528,4.02
+Heirloom Tomato Salad,Fearing's Restaurant,16.93,New American,"Basil, burrata",salad,32.792157,-96.803528,4.35
+Roasted Chicken,Fearing's Restaurant,38.86,New American,"Herb jus, potatoes",entree,32.792157,-96.803528,4.02
+Pie Slice,Maple Leaf Diner,10.67,Diner,Daily selection,dessert,32.923259,-96.80538,3.91
+Chicken Fried Steak,Maple Leaf Diner,21.69,Diner,Cream gravy,entree,32.923259,-96.80538,3.93
+Patty Melt,Maple Leaf Diner,16.43,Diner,Griddled burger on rye,sandwich,32.923259,-96.80538,4.67
+Chicken & Waffles,Oddfellows,27.87,Brunch,"Fried chicken, waffle",entree,32.7488496,-96.8273722,3.52
+Mimosa,Oddfellows,6.21,Brunch,Sparkling wine & OJ,beverage,32.7488496,-96.8273722,3.55
+Avocado Benedict,Oddfellows,14.67,Brunch,"Poached eggs, hollandaise",breakfast,32.7488496,-96.8273722,3.65
+Tomato Basil Soup,LA Burger - Carrollton/Dallas,10.88,Korean‑American,Comfort soup,soup,32.9848253,-96.90831899999999,4.04
+House Salad,LA Burger - Carrollton/Dallas,17.28,Korean‑American,"Greens, vinaigrette",salad,32.9848253,-96.90831899999999,5.0
+Grilled Salmon,LA Burger - Carrollton/Dallas,41.5,Korean‑American,Lemon herb butter,entree,32.9848253,-96.90831899999999,4.78
+Tomato Basil Soup,Monarch Dallas,8.26,Italian Steakhouse,Comfort soup,soup,32.7814389,-96.8006905,3.68
+Grilled Salmon,Monarch Dallas,22.66,Italian Steakhouse,Lemon herb butter,entree,32.7814389,-96.8006905,4.22
+House Salad,Monarch Dallas,12.32,Italian Steakhouse,"Greens, vinaigrette",salad,32.7814389,-96.8006905,3.84
+French Onion Soup,Beverley's Bistro & Bar,9.14,Bistro,Gruyère gratinée,soup,32.8165587,-96.79336579999999,4.86
+Steak Frites,Beverley's Bistro & Bar,37.59,Bistro,"Grilled steak, fries",entree,32.8165587,-96.79336579999999,4.08
+Crème Caramel,Beverley's Bistro & Bar,7.46,Bistro,Custard dessert,dessert,32.8165587,-96.79336579999999,4.81
+Grilled Salmon,Smoky Rose,38.09,Barbecue & American,Lemon herb butter,entree,32.8230587,-96.7143949,4.3
+House Salad,Smoky Rose,16.4,Barbecue & American,"Greens, vinaigrette",salad,32.8230587,-96.7143949,4.6
+Tomato Basil Soup,Smoky Rose,5.74,Barbecue & American,Comfort soup,soup,32.8230587,-96.7143949,4.18
+Tomato Basil Soup,HG Sply Co.,8.05,American,Comfort soup,soup,32.7273918,-97.35942829999999,3.52
+House Salad,HG Sply Co.,15.6,American,"Greens, vinaigrette",salad,32.7273918,-97.35942829999999,4.01
+Grilled Salmon,HG Sply Co.,41.1,American,Lemon herb butter,entree,32.7273918,-97.35942829999999,4.76
+Tomato Basil Soup,The Henry - Dallas,8.05,American,Comfort soup,soup,32.7892021,-96.8055857,3.6
+House Salad,The Henry - Dallas,15.58,American,"Greens, vinaigrette",salad,32.7892021,-96.8055857,4.11
+Grilled Salmon,The Henry - Dallas,22.98,American,Lemon herb butter,entree,32.7892021,-96.8055857,3.54
+Grilled Salmon,Lyfe Kitchen (Legacy),22.34,American,Lemon herb butter,entree,33.0263903,-96.793858,4.94
+House Salad,Lyfe Kitchen (Legacy),13.18,American,"Greens, vinaigrette",salad,33.0263903,-96.793858,4.99
+Tomato Basil Soup,Lyfe Kitchen (Legacy),9.27,American,Comfort soup,soup,33.0263903,-96.793858,3.59
+Grilled Salmon,True Food Kitchen - Dallas,18.97,American,Lemon herb butter,entree,32.8640947,-96.8033337,4.89
+House Salad,True Food Kitchen - Dallas,9.59,American,"Greens, vinaigrette",salad,32.8640947,-96.8033337,3.98
+Tomato Basil Soup,True Food Kitchen - Dallas,8.44,American,Comfort soup,soup,32.8640947,-96.8033337,4.23
+Grilled Salmon,Flower Child - Inwood,18.21,American,Lemon herb butter,entree,32.8506489,-96.8197378,4.66
+Tomato Basil Soup,Flower Child - Inwood,6.74,American,Comfort soup,soup,32.8506489,-96.8197378,4.94
+House Salad,Flower Child - Inwood,14.02,American,"Greens, vinaigrette",salad,32.8506489,-96.8197378,4.09
+Patty Melt,S&D Diner (Legacy),10.57,Diner,Griddled burger on rye,sandwich,32.7977533,-96.8015204,3.61
+Pie Slice,S&D Diner (Legacy),7.4,Diner,Daily selection,dessert,32.7977533,-96.8015204,4.31
+Chicken Fried Steak,S&D Diner (Legacy),22.88,Diner,Cream gravy,entree,32.7977533,-96.8015204,3.99
+Naan,Kalachandji's,5.07,Indian / Vegetarian,Tandoor flatbread,side,32.79405,-96.7499028,4.12
+Thali Plate,Kalachandji's,41.03,Indian / Vegetarian,Assorted vegetarian curries,entree,32.79405,-96.7499028,4.19
+Mango Lassi,Kalachandji's,4.06,Indian / Vegetarian,Yogurt drink,beverage,32.79405,-96.7499028,4.1
+Chana Masala,Kalachandji's,18.82,Indian / Vegetarian,Chickpea curry,entree,32.79405,-96.7499028,4.06
+Garlic Naan,Roti Grill,7.64,Indian,Garlic butter naan,side,32.8207957,-96.7874429,4.18
+Gulab Jamun,Roti Grill,9.07,Indian,Milk-sweet dumplings,dessert,32.8207957,-96.7874429,4.79
+Hyderabadi Biryani,Roti Grill,26.02,Indian,Aromatic rice with spices,entree,32.8207957,-96.7874429,3.85
+Chicken Tikka Masala,Roti Grill,30.99,Indian,Tomato‑cream sauce,entree,32.8207957,-96.7874429,3.57
+Chicken Tikka Masala,Hyderabadi Biryani & BBQ,29.52,Indian,Tomato‑cream sauce,entree,32.8706702,-96.7660629,4.79
+Garlic Naan,Hyderabadi Biryani & BBQ,8.84,Indian,Garlic butter naan,side,32.8706702,-96.7660629,4.52
+Hyderabadi Biryani,Hyderabadi Biryani & BBQ,33.86,Indian,Aromatic rice with spices,entree,32.8706702,-96.7660629,4.38
+Gulab Jamun,Hyderabadi Biryani & BBQ,11.64,Indian,Milk-sweet dumplings,dessert,32.8706702,-96.7660629,4.04
+Garlic Naan,Shivas Bar and Grill,7.74,Indian,Garlic butter naan,side,32.7827945,-96.8044163,4.28
+Hyderabadi Biryani,Shivas Bar and Grill,33.25,Indian,Aromatic rice with spices,entree,32.7827945,-96.8044163,3.81
+Chicken Tikka Masala,Shivas Bar and Grill,19.24,Indian,Tomato‑cream sauce,entree,32.7827945,-96.8044163,4.9
+Gulab Jamun,Shivas Bar and Grill,11.4,Indian,Milk-sweet dumplings,dessert,32.7827945,-96.8044163,4.27
+Greek Salad,Cava - Dallas,13.99,Mediterranean,"Feta, olives",salad,32.7897856,-96.8040695,3.85
+Falafel Bowl,Cava - Dallas,20.99,Mediterranean,"Herb falafel, grains",entree,32.7897856,-96.8040695,3.99
+Hummus & Pita,Cava - Dallas,11.32,Mediterranean,Chickpea dip,appetizer,32.7897856,-96.8040695,3.53
+Chicken Pita,Cava - Dallas,13.03,Mediterranean,"Grilled chicken, tzatziki",sandwich,32.7897856,-96.8040695,4.55
+Baklava,Ziziki's,9.29,Greek,Honey‑nut pastry,dessert,32.8221685,-96.7907997,4.27
+Spanakopita,Ziziki's,6.0,Greek,Spinach & feta pie,appetizer,32.8221685,-96.7907997,3.66
+Gyro Plate,Ziziki's,23.46,Greek,"Sliced lamb-beef, tzatziki",entree,32.8221685,-96.7907997,3.73
+Tabbouleh,Shawarma Press,12.98,Middle Eastern,"Parsley, bulgur salad",salad,32.7873337,-96.7985642,4.91
+Beef Kofta,Shawarma Press,33.57,Middle Eastern,Spiced ground beef skewers,entree,32.7873337,-96.7985642,4.62
+Chicken Shawarma Plate,Shawarma Press,29.29,Middle Eastern,Spit-roasted chicken,entree,32.7873337,-96.7985642,4.08
+Tomato Basil Soup,Afrah Mediterranean,8.61,Lebanese,Comfort soup,soup,32.9480486,-96.72805819999999,4.16
+Grilled Salmon,Afrah Mediterranean,32.46,Lebanese,Lemon herb butter,entree,32.9480486,-96.72805819999999,4.78
+House Salad,Afrah Mediterranean,12.02,Lebanese,"Greens, vinaigrette",salad,32.9480486,-96.72805819999999,4.47
+Falafel Bowl,Mandalay Canal Bistro (Legacy),27.71,Mediterranean,"Herb falafel, grains",entree,32.8673248,-96.94065979999999,3.86
+Chicken Pita,Mandalay Canal Bistro (Legacy),14.75,Mediterranean,"Grilled chicken, tzatziki",sandwich,32.8673248,-96.94065979999999,4.52
+Greek Salad,Mandalay Canal Bistro (Legacy),11.62,Mediterranean,"Feta, olives",salad,32.8673248,-96.94065979999999,4.14
+Spanakopita,Little Greek,13.12,Greek,Spinach & feta pie,appetizer,32.8783394,-96.77134509999999,4.97
+Gyro Plate,Little Greek,35.1,Greek,"Sliced lamb-beef, tzatziki",entree,32.8783394,-96.77134509999999,4.12
+Baklava,Little Greek,9.62,Greek,Honey‑nut pastry,dessert,32.8783394,-96.77134509999999,4.46
+Chicken Pita,Cafe Izmir,18.0,Mediterranean,"Grilled chicken, tzatziki",sandwich,32.8320278,-96.7704693,3.92
+Greek Salad,Cafe Izmir,15.05,Mediterranean,"Feta, olives",salad,32.8320278,-96.7704693,4.71
+Hummus & Pita,Cafe Izmir,8.16,Mediterranean,Chickpea dip,appetizer,32.8320278,-96.7704693,3.57
+Margherita,Cane Rosso - Deep Ellum,24.3,Neapolitan Pizza,"San Marzano, mozzarella, basil",pizza,32.7826353,-96.78540570000001,3.7
+Honey Bastard,Cane Rosso - Deep Ellum,17.44,Neapolitan Pizza,"Hot soppressata, bacon, honey",pizza,32.7826353,-96.78540570000001,3.65
+Caccio e Pepe Pie,Cane Rosso - Deep Ellum,16.7,Neapolitan Pizza,"Pecorino, black pepper",pizza,32.7826353,-96.78540570000001,4.28
+Garlic Knots,Zoli's NY Pizza,10.06,Pizza,"Herb butter, parmesan",appetizer,32.9513061,-96.8384614,4.38
+Pepperoni,Zoli's NY Pizza,13.7,Pizza,"Mozzarella, pepperoni",pizza,32.9513061,-96.8384614,4.46
+New York Cheese,Zoli's NY Pizza,22.0,Pizza,"Tomato sauce, mozzarella",pizza,32.9513061,-96.8384614,4.64
+Meat Lovers,Zoli's NY Pizza,25.47,Pizza,Assorted meats,pizza,32.9513061,-96.8384614,4.54
+New York Cheese,Eno's Pizza Tavern - Bishop Arts,21.58,Pizza,"Tomato sauce, mozzarella",pizza,32.7484173,-96.8284655,4.01
+Garlic Knots,Eno's Pizza Tavern - Bishop Arts,9.91,Pizza,"Herb butter, parmesan",appetizer,32.7484173,-96.8284655,3.68
+Pepperoni,Eno's Pizza Tavern - Bishop Arts,13.79,Pizza,"Mozzarella, pepperoni",pizza,32.7484173,-96.8284655,4.2
+Meat Lovers,Eno's Pizza Tavern - Bishop Arts,17.81,Pizza,Assorted meats,pizza,32.7484173,-96.8284655,4.94
+Cacio e Pepe,Lucia,15.2,Italian,"Pecorino, black pepper",pasta,32.7470252,-96.8285753,4.45
+Spaghetti Carbonara,Lucia,20.8,Italian,"Guanciale, egg, pecorino",pasta,32.7470252,-96.8285753,3.81
+Burrata,Lucia,6.55,Italian,Creamy burrata & tomatoes,appetizer,32.7470252,-96.8285753,4.7
+Tiramisu,Lucia,10.56,Italian,"Mascarpone, espresso, cocoa",dessert,32.7470252,-96.8285753,4.94
+Cacio e Pepe,Terilli's,17.71,Italian,"Pecorino, black pepper",pasta,32.8230388,-96.77040889999999,3.75
+Burrata,Terilli's,12.98,Italian,Creamy burrata & tomatoes,appetizer,32.8230388,-96.77040889999999,4.3
+Tiramisu,Terilli's,8.54,Italian,"Mascarpone, espresso, cocoa",dessert,32.8230388,-96.77040889999999,4.83
+Spaghetti Carbonara,Terilli's,16.97,Italian,"Guanciale, egg, pecorino",pasta,32.8230388,-96.77040889999999,3.83
+Spaghetti Carbonara,The Charles,25.75,Italian,"Guanciale, egg, pecorino",pasta,32.7929042,-96.8219707,4.37
+Tiramisu,The Charles,9.73,Italian,"Mascarpone, espresso, cocoa",dessert,32.7929042,-96.8219707,5.0
+Burrata,The Charles,7.91,Italian,Creamy burrata & tomatoes,appetizer,32.7929042,-96.8219707,3.63
+Tomato Basil Soup,Monarch Dallas,8.26,Italian Steakhouse,Comfort soup,soup,32.7814389,-96.8006905,3.68
+Grilled Salmon,Monarch Dallas,22.66,Italian Steakhouse,Lemon herb butter,entree,32.7814389,-96.8006905,4.22
+House Salad,Monarch Dallas,12.32,Italian Steakhouse,"Greens, vinaigrette",salad,32.7814389,-96.8006905,3.84
+Cacio e Pepe,Sassetta,22.1,Italian,"Pecorino, black pepper",pasta,32.7806516,-96.7985697,4.8
+Tiramisu,Sassetta,11.57,Italian,"Mascarpone, espresso, cocoa",dessert,32.7806516,-96.7985697,4.72
+Spaghetti Carbonara,Sassetta,22.06,Italian,"Guanciale, egg, pecorino",pasta,32.7806516,-96.7985697,3.8
+White Pie,Homeslice - Dallas,17.56,NY Pizza,"Ricotta, garlic",pizza,30.31592119999999,-97.71849789999999,4.52
+Sicilian Square,Homeslice - Dallas,18.85,NY Pizza,"Thick crust, tomato",pizza,30.31592119999999,-97.71849789999999,4.98
+Garlic Knots,ZaLat Pizza - Dallas,11.62,Pizza,"Herb butter, parmesan",appetizer,32.8123676,-96.78396769999999,3.7
+Meat Lovers,ZaLat Pizza - Dallas,16.33,Pizza,Assorted meats,pizza,32.8123676,-96.78396769999999,3.8
+New York Cheese,ZaLat Pizza - Dallas,16.02,Pizza,"Tomato sauce, mozzarella",pizza,32.8123676,-96.78396769999999,3.64
+Pepperoni,ZaLat Pizza - Dallas,13.93,Pizza,"Mozzarella, pepperoni",pizza,32.8123676,-96.78396769999999,3.8
+Burrata,Carbone Vino,7.73,Italian,Creamy burrata & tomatoes,appetizer,32.795333,-96.8203202,3.87
+Spaghetti Carbonara,Carbone Vino,20.78,Italian,"Guanciale, egg, pecorino",pasta,32.795333,-96.8203202,4.87
+Tiramisu,Carbone Vino,10.35,Italian,"Mascarpone, espresso, cocoa",dessert,32.795333,-96.8203202,4.17
+Cacio e Pepe,Carbone Vino,27.67,Italian,"Pecorino, black pepper",pasta,32.795333,-96.8203202,4.01
+Cacio e Pepe,Eataly Dallas - La Pizza & La Pasta,26.22,Italian,"Pecorino, black pepper",pasta,32.8681616,-96.7755237,4.27
+Burrata,Eataly Dallas - La Pizza & La Pasta,10.59,Italian,Creamy burrata & tomatoes,appetizer,32.8681616,-96.7755237,4.96
+Tiramisu,Eataly Dallas - La Pizza & La Pasta,8.82,Italian,"Mascarpone, espresso, cocoa",dessert,32.8681616,-96.7755237,4.71
+Spaghetti Carbonara,Eataly Dallas - La Pizza & La Pasta,20.17,Italian,"Guanciale, egg, pecorino",pasta,32.8681616,-96.7755237,4.89
+Oysters on the Half Shell,TJ's Seafood Market & Grill,31.36,Seafood,Fresh shucked,seafood_plate,32.8962069,-96.80318749999999,3.72
+Blackened Redfish,TJ's Seafood Market & Grill,29.09,Seafood,Cajun-spiced fillet,seafood_plate,32.8962069,-96.80318749999999,4.97
+Clam Chowder,TJ's Seafood Market & Grill,11.52,Seafood,Creamy New England style,soup,32.8962069,-96.80318749999999,4.65
+Key Lime Pie,TJ's Seafood Market & Grill,6.62,Seafood,"Graham crust, lime custard",dessert,32.8962069,-96.80318749999999,3.85
+Gulf Shrimp Cocktail,TJ's Seafood Market & Grill,13.03,Seafood,"Poached shrimp, cocktail sauce",appetizer,32.8962069,-96.80318749999999,4.42
+Gulf Shrimp Cocktail,Truluck's - Uptown,8.25,Seafood,"Poached shrimp, cocktail sauce",appetizer,32.7948208,-96.80292740000002,4.77
+Key Lime Pie,Truluck's - Uptown,7.26,Seafood,"Graham crust, lime custard",dessert,32.7948208,-96.80292740000002,3.77
+Oysters on the Half Shell,Truluck's - Uptown,24.86,Seafood,Fresh shucked,seafood_plate,32.7948208,-96.80292740000002,3.81
+Clam Chowder,Truluck's - Uptown,9.81,Seafood,Creamy New England style,soup,32.7948208,-96.80292740000002,4.36
+Blackened Redfish,Truluck's - Uptown,35.06,Seafood,Cajun-spiced fillet,seafood_plate,32.7948208,-96.80292740000002,4.66
+Oysters on the Half Shell,S&D Oyster Company,18.88,Seafood,Fresh shucked,seafood_plate,32.7977533,-96.8015204,3.63
+Gulf Shrimp Cocktail,S&D Oyster Company,8.67,Seafood,"Poached shrimp, cocktail sauce",appetizer,32.7977533,-96.8015204,3.93
+Clam Chowder,S&D Oyster Company,5.92,Seafood,Creamy New England style,soup,32.7977533,-96.8015204,4.53
+Blackened Redfish,S&D Oyster Company,37.6,Seafood,Cajun-spiced fillet,seafood_plate,32.7977533,-96.8015204,3.89
+Key Lime Pie,S&D Oyster Company,6.97,Seafood,"Graham crust, lime custard",dessert,32.7977533,-96.8015204,4.92
+Key Lime Pie,The Oceanaire - Dallas,6.45,Seafood,"Graham crust, lime custard",dessert,32.929788,-96.82022099999999,4.98
+Clam Chowder,The Oceanaire - Dallas,11.18,Seafood,Creamy New England style,soup,32.929788,-96.82022099999999,3.57
+Oysters on the Half Shell,The Oceanaire - Dallas,36.08,Seafood,Fresh shucked,seafood_plate,32.929788,-96.82022099999999,4.77
+Gulf Shrimp Cocktail,The Oceanaire - Dallas,10.36,Seafood,"Poached shrimp, cocktail sauce",appetizer,32.929788,-96.82022099999999,4.94
+Blackened Redfish,The Oceanaire - Dallas,34.69,Seafood,Cajun-spiced fillet,seafood_plate,32.929788,-96.82022099999999,4.88
+Crawfish Étouffée,Pappadeaux - Dallas,24.39,Cajun & Seafood,"Rich roux, rice",seafood_plate,32.9991724,-96.8303742,3.71
+Fried Catfish,Pappadeaux - Dallas,28.8,Cajun & Seafood,Cornmeal crust,seafood_plate,32.9991724,-96.8303742,4.91
+Dirty Rice,Pappadeaux - Dallas,4.83,Cajun & Seafood,Cajun-style rice,side,32.9991724,-96.8303742,4.64
+Banana Pudding,Cattleack Barbeque,6.56,Barbecue,Classic vanilla wafer pudding,dessert,32.9346701,-96.8362592,3.81
+Sweet Tea,Cattleack Barbeque,5.41,Barbecue,House-brewed sweet tea,beverage,32.9346701,-96.8362592,4.32
+Banana Pudding,Terry Black's Barbecue,7.67,Barbecue,Classic vanilla wafer pudding,dessert,32.7848915,-96.7799081,3.78
+Sweet Tea,Hurtado Barbecue - Dallas,5.41,Barbecue,House-brewed sweet tea,beverage,32.7779085,-96.7905198,4.47
+Banana Pudding,Hurtado Barbecue - Dallas,10.84,Barbecue,Classic vanilla wafer pudding,dessert,32.7779085,-96.7905198,4.91
+Banana Pudding,Slow Bone,7.76,Barbecue,Classic vanilla wafer pudding,dessert,32.796284,-96.83419130000001,3.76
+Tres Leches Cake,Mi Cocina - Highland Park,10.64,Mexican,Soaked sponge cake,dessert,32.8357735,-96.8060517,4.24
+Horchata,El Fenix Downtown,5.68,Mexican,Cinnamon rice drink,beverage,32.787446,-96.8048645,4.95
+Tres Leches Cake,El Fenix Downtown,9.81,Mexican,Soaked sponge cake,dessert,32.787446,-96.8048645,4.41
+Tres Leches Cake,Javier's Gourmet Mexicano,9.34,Mexican,Soaked sponge cake,dessert,32.8280791,-96.78602149999999,4.46
+Horchata,Javier's Gourmet Mexicano,5.74,Mexican,Cinnamon rice drink,beverage,32.8280791,-96.78602149999999,4.56
+Tres Leches Cake,Meso Maya,10.47,Mexican,Soaked sponge cake,dessert,32.787751,-96.8047241,3.75
+Horchata,Meso Maya,5.99,Mexican,Cinnamon rice drink,beverage,32.787751,-96.8047241,3.73
+Churros,Velvet Taco - Henderson,10.75,Tacos,Cinnamon-sugar dough sticks,dessert,32.783816,-96.78676379999999,4.65
+Churros,La Ventana - Downtown,9.17,Tacos,Cinnamon-sugar dough sticks,dessert,32.7778412,-96.78977069999999,4.01
+Tiramisu,Lucia,10.56,Italian,"Mascarpone, espresso, cocoa",dessert,32.7470252,-96.8285753,4.94
+Tiramisu,Terilli's,8.54,Italian,"Mascarpone, espresso, cocoa",dessert,32.8230388,-96.77040889999999,4.83
+Matcha Ice Cream,Uchi Dallas,9.9,Japanese,Green tea ice cream,dessert,32.7968652,-96.8065259,4.64
+Matcha Ice Cream,Tei‑An,6.04,Japanese,Green tea ice cream,dessert,32.792057,-96.79550470000001,3.95
+Matcha Ice Cream,Oishii,7.14,Japanese,Green tea ice cream,dessert,32.8103797,-96.8198431,3.62
+Matcha Ice Cream,Nobu Dallas,10.8,Japanese,Green tea ice cream,dessert,32.7941945,-96.80399349999999,4.84
+Milkshake,Rodeo Goat - Dallas,6.34,Burgers,Thick vanilla shake,beverage,32.7972031,-96.8239998,3.97
+Milkshake,Keller's Drive-In,4.6,Burgers,Thick vanilla shake,beverage,32.8689598,-96.88208829999999,3.8
+Milkshake,Off-Site Kitchen (Legacy),6.13,Burgers,Thick vanilla shake,beverage,32.7787503,-96.8292367,4.83
+Milkshake,Hopdoddy - Dallas,5.17,Burgers,Thick vanilla shake,beverage,32.8042444,-96.79973009999999,4.57
+Crème Brûlée,Al Biernat's - Oak Lawn,8.52,Steakhouse,Vanilla custard,dessert,32.8203061,-96.8026735,4.75
+Crème Brûlée,Nick & Sam's,11.57,Steakhouse,Vanilla custard,dessert,32.7984933,-96.8074407,4.5
+Key Lime Pie,TJ's Seafood Market & Grill,6.62,Seafood,"Graham crust, lime custard",dessert,32.8962069,-96.80318749999999,3.85
+Key Lime Pie,Truluck's - Uptown,7.26,Seafood,"Graham crust, lime custard",dessert,32.7948208,-96.80292740000002,3.77
+Key Lime Pie,S&D Oyster Company,6.97,Seafood,"Graham crust, lime custard",dessert,32.7977533,-96.8015204,4.92
+Key Lime Pie,The Oceanaire - Dallas,6.45,Seafood,"Graham crust, lime custard",dessert,32.929788,-96.82022099999999,4.98
+Cà Phê Sữa Đá,Mai's Vietnamese Restaurant,6.13,Vietnamese,Iced coffee w/ milk,beverage,32.8033743,-96.7737088,4.94
+Mango Lassi,Kalachandji's,4.06,Indian / Vegetarian,Yogurt drink,beverage,32.79405,-96.7499028,4.1
+Gulab Jamun,Roti Grill,9.07,Indian,Milk-sweet dumplings,dessert,32.8207957,-96.7874429,4.79
+Gulab Jamun,Hyderabadi Biryani & BBQ,11.64,Indian,Milk-sweet dumplings,dessert,32.8706702,-96.7660629,4.04
+Gulab Jamun,Shivas Bar and Grill,11.4,Indian,Milk-sweet dumplings,dessert,32.7827945,-96.8044163,4.27
+Baklava,Ziziki's,9.29,Greek,Honey‑nut pastry,dessert,32.8221685,-96.7907997,4.27
+Blueberry Muffin,Bread Winners Cafe & Bakery,6.15,Bakery & Cafe,Baked muffin,dessert,32.8045201,-96.7994817,3.54
+Latte,Bread Winners Cafe & Bakery,4.9,Bakery & Cafe,Espresso with milk,beverage,32.8045201,-96.7994817,4.71
+Pie Slice,Maple Leaf Diner,10.67,Diner,Daily selection,dessert,32.923259,-96.80538,3.91
+Mimosa,Oddfellows,6.21,Brunch,Sparkling wine & OJ,beverage,32.7488496,-96.8273722,3.55
+Croissant,La La Land Kind Cafe,11.38,Cafe,Buttery pastry,dessert,32.8153271,-96.7711763,3.99
+Cappuccino,La La Land Kind Cafe,4.9,Cafe,Espresso & foam,beverage,32.8153271,-96.7711763,3.81
+Pecan Pie,Bubba's Cooks Country,6.46,Southern,Texas pecan slice,dessert,32.847426,-96.7871514,4.71
+Pecan Pie,Norma's Cafe,9.26,Southern,Texas pecan slice,dessert,32.7497698,-96.8412828,4.33
+Pecan Pie,Yardbird Table & Bar,10.62,Southern,Texas pecan slice,dessert,32.7905545,-96.8011859,3.9
+Matcha Ice Cream,Sushi Robata,7.67,Japanese,Green tea ice cream,dessert,32.9992369,-96.82630170000002,3.53
+Tiramisu,The Charles,9.73,Italian,"Mascarpone, espresso, cocoa",dessert,32.7929042,-96.8219707,5.0
+Tiramisu,Sassetta,11.57,Italian,"Mascarpone, espresso, cocoa",dessert,32.7806516,-96.7985697,4.72
+Crème Caramel,Beverley's Bistro & Bar,7.46,Bistro,Custard dessert,dessert,32.8165587,-96.79336579999999,4.81
+Churros,Tacodeli - Dallas,7.68,Tacos,Cinnamon-sugar dough sticks,dessert,32.7693063,-96.8355318,4.39
+Churros,Torchy's Tacos - Dallas,7.45,Tacos,Cinnamon-sugar dough sticks,dessert,32.9100751,-96.805914,4.49
+Churros,El Come Taco,9.98,Tacos,Cinnamon-sugar dough sticks,dessert,32.8123093,-96.7838025,4.67
+Tiramisu,Carbone Vino,10.35,Italian,"Mascarpone, espresso, cocoa",dessert,32.795333,-96.8203202,4.17
+Horchata,Jose,4.1,Mexican,Cinnamon rice drink,beverage,32.8514433,-96.8256007,4.56
+Tres Leches Cake,Jose,11.85,Mexican,Soaked sponge cake,dessert,32.8514433,-96.8256007,4.3
+Tiramisu,Eataly Dallas - La Pizza & La Pasta,8.82,Italian,"Mascarpone, espresso, cocoa",dessert,32.8681616,-96.7755237,4.71
+Matcha Ice Cream,Kazy's Gourmet Shop,7.78,Japanese,Green tea ice cream,dessert,32.9134015,-96.7400991,4.26
+Pie Slice,S&D Diner (Legacy),7.4,Diner,Daily selection,dessert,32.7977533,-96.8015204,4.31
+Baklava,Little Greek,9.62,Greek,Honey‑nut pastry,dessert,32.8783394,-96.77134509999999,4.46
+Sweet Tea,Lockhart Smokehouse - Bishop Arts,6.25,Barbecue,House-brewed sweet tea,beverage,32.7493058,-96.8285861,3.98
+Banana Pudding,Lockhart Smokehouse - Bishop Arts,9.3,Barbecue,Classic vanilla wafer pudding,dessert,32.7493058,-96.8285861,3.74
+Stracciatella Gelato,Amorino Gelato - Dallas,6.33,Gelato,Chocolate shard gelato,dessert,32.8646009,-96.8031582,4.17
+Pistachio Gelato,Amorino Gelato - Dallas,9.11,Gelato,Classic pistachio,dessert,32.8646009,-96.8031582,4.24
+Salted Peanut Butter w/ Chocolate Flecks,Jeni's Splendid Ice Creams - Dallas,7.22,Ice Cream,Signature scoop,dessert,32.7882988,-96.8092004,4.97
+Brown Butter Almond Brittle,Jeni's Splendid Ice Creams - Dallas,9.3,Ice Cream,Signature scoop,dessert,32.7882988,-96.8092004,4.09
+Fried Chicken Plate,Bubba's Cooks Country,32.3,Southern,Buttermilk fried chicken,entree,32.847426,-96.7871514,3.84
+Collard Greens,Bubba's Cooks Country,5.65,Southern,Slow-cooked greens,side,32.847426,-96.7871514,3.94
+Collard Greens,Norma's Cafe,4.39,Southern,Slow-cooked greens,side,32.7497698,-96.8412828,4.31
+Fried Chicken Plate,Norma's Cafe,26.6,Southern,Buttermilk fried chicken,entree,32.7497698,-96.8412828,3.71
+Fried Chicken Plate,Yardbird Table & Bar,26.13,Southern,Buttermilk fried chicken,entree,32.7905545,-96.8011859,4.11
+Collard Greens,Yardbird Table & Bar,9.68,Southern,Slow-cooked greens,side,32.7905545,-96.8011859,3.6
+Comeback Slaw,Hattie B’s Hot Chicken (Legacy pickup),4.5,Hot Chicken,Tangy slaw,side,32.8124257,-96.80672770000001,4.95
+Nashville Hot Sandwich,Hattie B’s Hot Chicken (Legacy pickup),13.43,Hot Chicken,Hot seasoned chicken,sandwich,32.8124257,-96.80672770000001,4.23
+BBQ Jackfruit Sandwich,Wayward Vegan,15.18,Vegan,Pulled jackfruit bun,sandwich,32.7948399,-96.82943829999999,4.19
+Vegan Nachos,Wayward Vegan,13.27,Vegan,"Cashew queso, black beans",appetizer,32.7948399,-96.82943829999999,4.18
+Kale Caesar,Wayward Vegan,16.44,Vegan,Vegan Caesar,salad,32.7948399,-96.82943829999999,4.97
+Vegan Nachos,Spiral Diner & Bakery,10.76,Vegan,"Cashew queso, black beans",appetizer,32.7308297,-97.340166,4.5
+Kale Caesar,Spiral Diner & Bakery,16.42,Vegan,Vegan Caesar,salad,32.7308297,-97.340166,4.23
+BBQ Jackfruit Sandwich,Spiral Diner & Bakery,17.37,Vegan,Pulled jackfruit bun,sandwich,32.7308297,-97.340166,4.09
+Grilled Salmon,Si Tapas,39.82,Spanish,Lemon herb butter,entree,32.796033,-96.7966742,4.87
+House Salad,Si Tapas,10.63,Spanish,"Greens, vinaigrette",salad,32.796033,-96.7966742,4.77
+Tomato Basil Soup,Si Tapas,9.1,Spanish,Comfort soup,soup,32.796033,-96.7966742,4.35
+Grilled Salmon,Cafe Madrid,26.62,Spanish,Lemon herb butter,entree,32.8222725,-96.7912783,4.05
+House Salad,Cafe Madrid,11.89,Spanish,"Greens, vinaigrette",salad,32.8222725,-96.7912783,4.57
+Tomato Basil Soup,Cafe Madrid,5.73,Spanish,Comfort soup,soup,32.8222725,-96.7912783,3.93

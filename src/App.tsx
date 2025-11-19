@@ -11,6 +11,8 @@ import RoleSelection from "@/customer/pages/RoleSelection";
 import Restaurants from "@/customer/pages/Restaurants";
 import RestaurantDetail from "@/customer/pages/RestaurantDetail";
 import SuggestionDetail from "@/customer/pages/SuggestionDetail";
+import FoodSearchResults from "@/customer/pages/FoodSearchResults";
+import CSVRestaurantDetail from "@/customer/pages/CSVRestaurantDetail";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +31,8 @@ const App = () => (
           <Route path="/customer/*" element={<CustomerApp />} />
           <Route path="/restaurants" element={<Restaurants />} />
           <Route path="/restaurants/:id" element={<RestaurantDetail />} />
+          <Route path="/search" element={<FoodSearchResults />} />
+          <Route path="/csv-restaurant/:slug" element={<CSVRestaurantDetail />} />
           <Route path="/suggestion" element={<SuggestionDetail />} />
           <Route path="/business/*" element={<BusinessApp />} />
           {/* Redirect unknown routes to auth */}
