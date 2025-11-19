@@ -13,53 +13,39 @@ import { useToast } from "@/shared/hooks/use-toast";
 const AnalyticsPanel = () => {
   const { toast } = useToast();
   const [fileName, setFileName] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const { rows, setRows, loadRestaurantReport, report, clearReport } = useBusinessData();
   const uploaded = Boolean(report);
 
-  // CSV/Image upload removed per latest requirements
-
-  const handleJson = (file: File | null) => {
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const text = String(e.target?.result || '');
-        const json = JSON.parse(text) as RestaurantReportEnvelope | RestaurantReportData;
-        const data: RestaurantReportData = (json as any).restaurant_report ? (json as RestaurantReportEnvelope).restaurant_report : (json as RestaurantReportData);
-        loadRestaurantReport(data);
-        setFileName(file.name);
-        toast({ title: 'Report uploaded', description: `${file.name} parsed successfully` });
-      } catch (err) {
-        toast({ title: 'Invalid JSON', description: 'Could not parse the report file.', variant: 'destructive' });
-      }
-    };
-    reader.readAsText(file);
-  };
-
   const handlePdf = async (file: File | null) => {
     if (!file) return;
-    const endpoint = import.meta.env.VITE_PDF_PARSE_URL as string | undefined;
-    if (!endpoint) {
-      toast({ title: 'Missing endpoint', description: 'Set VITE_PDF_PARSE_URL in your .env to enable PDF parsing.', variant: 'destructive' });
-      return;
-    }
+    
+    setIsLoading(true);
+    const endpoint = "http://127.0.0.1:8000/extract-json";
+    
     try {
       const form = new FormData();
-      form.append('file', file);
+      form.append('pdf', file);
       const res = await fetch(endpoint, { method: 'POST', body: form });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
-      // Expect either envelope or raw report; also optionally a session id for chat
-      const reportPayload: RestaurantReportEnvelope | RestaurantReportData = (data && data.restaurant_report) ? data : (data.report || data);
-      const parsed: RestaurantReportData = (reportPayload as any).restaurant_report ? (reportPayload as any).restaurant_report : (reportPayload as any);
-      loadRestaurantReport(parsed);
-      // persist session id if present
-      const sessionId = (data.session_id || data.id || null) as string | null;
-      if (sessionId) localStorage.setItem('business_report_session_id', sessionId);
+      
+      // Extract the report from response
+      const reportData: RestaurantReportData = data.report || data;
+      loadRestaurantReport(reportData);
       setFileName(file.name);
-      toast({ title: 'PDF parsed', description: `${file.name} processed successfully` });
+      
+      // Store pdf_id for chat context if needed
+      if (data.pdf_id) {
+        localStorage.setItem('current_pdf_id', data.pdf_id);
+      }
+      
+      toast({ title: 'PDF processed', description: `${file.name} extracted successfully` });
     } catch (err) {
-      toast({ title: 'PDF parse failed', description: 'Could not parse PDF. Try again or check the endpoint.', variant: 'destructive' });
+      console.error('PDF upload error:', err);
+      toast({ title: 'PDF upload failed', description: 'Could not process PDF. Ensure the API server is running at http://127.0.0.1:8000', variant: 'destructive' });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -73,28 +59,22 @@ const AnalyticsPanel = () => {
                 <FileText className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
                 <h3 className="text-lg font-semibold mb-2 text-foreground">Upload Sales Report</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Upload a JSON report or a PDF report to begin.
+                  Upload a PDF report to begin analysis and chat.
                 </p>
                 <div className="flex gap-4 justify-center">
-                  <Button variant="secondary" className="relative">
+                  <Button 
+                    variant="outline" 
+                    className="relative"
+                    disabled={isLoading}
+                  >
                     <Upload className="mr-2 h-4 w-4" />
-                    Upload JSON
-                    <input
-                      type="file"
-                      accept="application/json,.json"
-                      onChange={(e) => handleJson(e.target.files?.[0] ?? null)}
-                      className="absolute inset-0 opacity-0 cursor-pointer"
-                    />
-                  </Button>
-
-                  <Button variant="outline" className="relative">
-                    <Upload className="mr-2 h-4 w-4" />
-                    Upload PDF
+                    {isLoading ? 'Processing...' : 'Upload PDF'}
                     <input
                       type="file"
                       accept="application/pdf,.pdf"
                       onChange={(e) => handlePdf(e.target.files?.[0] ?? null)}
                       className="absolute inset-0 opacity-0 cursor-pointer"
+                      disabled={isLoading}
                     />
                   </Button>
                 </div>

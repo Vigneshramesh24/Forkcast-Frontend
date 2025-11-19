@@ -16,7 +16,7 @@ const ChatbotPanel = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
-  const { ragSearch, totalRevenue, revenueByDate, report } = useBusinessData();
+  const { report } = useBusinessData();
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -36,78 +36,34 @@ const ChatbotPanel = () => {
     setMessages((prev) => [...prev, newMessage]);
     setInputValue("");
 
-    // show a temporary 'thinking' bot message and then replace it with a synthesized reply
+    // show a temporary 'thinking' bot message
     const thinkingId = `bot-${Date.now()}`;
     const thinkingMessage: Message = { id: thinkingId, text: "Analyzing...", sender: "bot" };
     setMessages((prev) => [...prev, thinkingMessage]);
 
-    // If remote Q&A endpoint configured and we have a report session, call it; else fallback to RAG
-    const formatCurrency = (n: number) => `$${n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-    const q = text.toLowerCase();
-    const qaUrl = (import.meta as any).env?.VITE_REPORT_QA_URL as string | undefined;
-    const sessionId = localStorage.getItem('business_report_session_id');
-
-    const fallbackRag = () => {
-      let botText = "";
-      try {
-        if (q.includes("total") && q.includes("revenue")) {
-          const total = totalRevenue();
-          botText = `Total revenue across uploaded rows is ${formatCurrency(total)}.`;
-        } else if (q.includes("revenue by date") || q.includes("by date") || q.includes("trend") || q.includes("sales trend")) {
-          const byDate = revenueByDate();
-          if (byDate.length === 0) {
-            botText = "I don't have any uploaded sales data yet. Upload a JSON/PDF report on the right.";
-          } else {
-            const sample = byDate.slice(-5).map((d) => `${d.date}: ${formatCurrency(d.revenue)}`).join(', ');
-            botText = `I have ${byDate.length} date buckets. Recent examples — ${sample}.`;
-          }
-        } else if (q.match(/sales on|sales for|revenue on|revenue for/)) {
-          const rows = ragSearch(text);
-          if (rows.length === 0) botText = `I couldn't find sales for that date or query.`;
-          else {
-            const summed = rows.reduce((s, r) => s + (r.revenue || 0), 0);
-            botText = `Found ${rows.length} rows matching. Total: ${formatCurrency(summed)}. Example: ${rows
-              .slice(0, 3)
-              .map((r) => `${r.date} ${formatCurrency(r.revenue)}`)
-              .join(' ; ')}`;
-          }
-        } else {
-          const rows = ragSearch(text);
-          if (rows.length === 0) botText = `I couldn't find data matching "${text}". Try queries like "total revenue", "sales on 2025-01-15", or "revenue trend".`;
-          else
-            botText = `I found ${rows.length} matching rows. Sample: ${rows
-              .slice(0, 3)
-              .map((r) => `${r.date} ${formatCurrency(r.revenue)}`)
-              .join(' ; ')}`;
-        }
-      } catch (e) {
-        botText = "Sorry, I couldn't analyze the data — please try again.";
-      }
-      setTimeout(() => {
-        setMessages((prev) => prev.map((m) => (m.id === thinkingId ? { ...m, text: botText } : m)));
-      }, 400);
-    };
-
-    if (!qaUrl || !sessionId) {
-      // No endpoint configured yet or no session context — fallback
-      fallbackRag();
-      return;
-    }
-
+    // Call the /chat endpoint
     (async () => {
       try {
-        const res = await fetch(qaUrl, {
+        const form = new FormData();
+        form.append('question', text);
+        
+        // Get uploaded PDFs if any (from the report upload)
+        // Note: In this setup, we're passing the question only since PDFs are 
+        // already on the backend after /extract-json was called
+        
+        const res = await fetch("http://127.0.0.1:8000/chat", {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ question: text, session_id: sessionId }),
+          body: form,
         });
+        
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
-        const answer = data.answer || data.text || data.message || 'No answer provided.';
+        const answer = data.answer || data.text || 'No answer provided.';
+        
         setMessages((prev) => prev.map((m) => (m.id === thinkingId ? { ...m, text: String(answer) } : m)));
-      } catch (e) {
-        setMessages((prev) => prev.map((m) => (m.id === thinkingId ? { ...m, text: 'Endpoint unavailable — using local analysis.' } : m)));
-        fallbackRag();
+      } catch (err) {
+        console.error('Chat error:', err);
+        setMessages((prev) => prev.map((m) => (m.id === thinkingId ? { ...m, text: 'Sorry, I could not reach the API server. Ensure it is running at http://127.0.0.1:8000' } : m)));
       }
     })();
   };
