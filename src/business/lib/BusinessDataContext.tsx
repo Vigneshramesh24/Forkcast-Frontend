@@ -20,6 +20,9 @@ export type SalesRow = {
 type BusinessDataContextType = {
   rows: SalesRow[];
   setRows: (r: SalesRow[]) => void;
+  report: RestaurantReportData | null;
+  loadRestaurantReport: (r: RestaurantReportData) => void;
+  clearReport: () => void;
   totalRevenue: () => number;
   revenueByDate: () => { date: string; revenue: number }[];
   dailyFinancials: () => { date: string; revenue: number; expenses: number; profit: number; orders: number }[];
@@ -37,36 +40,24 @@ export const useBusinessData = () => {
 
 export const BusinessDataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [rows, setRows] = useState<SalesRow[]>([]);
+  const [report, setReport] = useState<RestaurantReportData | null>(null);
+  const [reportSessionId, setReportSessionId] = useState<string | null>(null);
 
   useEffect(() => {
     try {
+      const rawReport = localStorage.getItem('business_report');
+      if (rawReport) {
+        const parsed = JSON.parse(rawReport) as RestaurantReportEnvelope | RestaurantReportData;
+        const data = (isEnvelope(parsed) ? parsed.restaurant_report : parsed) as RestaurantReportData;
+        if (data) {
+          setReport(data);
+          const mapped = mapReportToRows(data);
+          setRows(mapped);
+          return;
+        }
+      }
       const raw = localStorage.getItem('business_sales_rows');
       if (raw) setRows(JSON.parse(raw));
-      else {
-        // generate mock data for current month (synthetic) if none present
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = today.getMonth();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-        const mock: SalesRow[] = [];
-        const itemNames = ['pizza','burger','salad','sushi','taco'];
-        for (let d = 1; d <= daysInMonth; d++) {
-          const date = new Date(year, month, d);
-          const iso = date.toISOString().slice(0,10);
-          const base = 500 + Math.random()*500; // revenue base
-          const items = itemNames.map(n => ({
-            name: n,
-            quantity: Math.floor(Math.random()*20),
-            revenue: Math.round((50 + Math.random()*100) * 100)/100,
-            cost: Math.round((20 + Math.random()*40) * 100)/100,
-          }));
-          const revenue = Math.round((base + items.reduce((s,i)=>s+i.revenue*i.quantity,0)) * 100)/100;
-          const expenses = Math.round((revenue * (0.45 + Math.random()*0.1)) * 100)/100;
-          const orders = items.reduce((s,i)=>s+i.quantity,0);
-          mock.push({ date: iso, revenue, expenses, profit: revenue-expenses, orders, items });
-        }
-        setRows(mock);
-      }
     } catch (e) {}
   }, []);
 
@@ -150,9 +141,109 @@ export const BusinessDataProvider: React.FC<{ children: React.ReactNode }> = ({ 
     return rows.filter((r) => Object.values(r).some((v) => String(v).toLowerCase().includes(q)));
   };
 
+  const loadRestaurantReport = (data: RestaurantReportData) => {
+    setReport(data);
+    const mapped = mapReportToRows(data);
+    setRows(mapped);
+    try {
+      localStorage.setItem('business_report', JSON.stringify(data));
+      localStorage.removeItem('business_sales_rows');
+    } catch {}
+  };
+
+  const clearReport = () => {
+    setReport(null);
+    try {
+      localStorage.removeItem('business_report');
+    } catch {}
+  };
+
   return (
-    <BusinessDataContext.Provider value={{ rows, setRows, totalRevenue, revenueByDate, dailyFinancials, itemsSoldAggregate, ragSearch }}>
+    <BusinessDataContext.Provider value={{ rows, setRows, report, loadRestaurantReport, clearReport, totalRevenue, revenueByDate, dailyFinancials, itemsSoldAggregate, ragSearch }}>
       {children}
     </BusinessDataContext.Provider>
   );
 };
+
+// ===== New report types & helpers =====
+
+export type RestaurantReportEnvelope = { restaurant_report: RestaurantReportData };
+
+export type RestaurantReportData = {
+  metadata?: {
+    month?: string; // YYYY-MM
+    restaurant_name?: string;
+  };
+  top_selling_item?: {
+    item_name: string;
+    units_sold: number;
+    percentage_of_sales: number;
+  };
+  top_5_selling_items?: { item_name: string; units_sold: number; percentage_of_sales: number }[];
+  bottom_5_selling_items?: { item_name: string; units_sold: number; percentage_of_sales: number }[];
+  menu_items?: { item_name: string; category: string; price: number }[];
+  daily_sales_summary?: {
+    date: string; // YYYY-MM-DD
+    day_of_week?: string;
+    week_number?: number;
+    number_of_sales: number;
+    units_sold?: number;
+    total_sales_amount: number;
+  }[];
+  total_month_sales?: { number_of_sales: number; units_sold?: number; total_sales_amount: number };
+  expenses_over_time?: { date: string; expense_category?: string; amount: number }[];
+  revenue_over_time?: { date: string; revenue: number }[];
+  profit_over_time?: { date: string; profit: number }[];
+  sales_percentages_by_item?: { item_name: string; percentage_of_total_sales: number }[];
+  tips?: { tip_title: string; tip_description: string }[];
+};
+
+function isEnvelope(v: any): v is RestaurantReportEnvelope {
+  return v && typeof v === 'object' && 'restaurant_report' in v;
+}
+
+function mapReportToRows(rr: RestaurantReportData): SalesRow[] {
+  const byDate: Record<string, SalesRow> = {};
+  // seed from daily sales summary
+  (rr.daily_sales_summary || []).forEach((d) => {
+    const date = d.date;
+    if (!byDate[date]) byDate[date] = { date, revenue: 0, orders: 0, expenses: 0, profit: 0 };
+    byDate[date].revenue += Number(d.total_sales_amount || 0);
+    byDate[date].orders = (byDate[date].orders || 0) + Number(d.number_of_sales || 0);
+  });
+  // merge revenue_over_time (authoritative if present)
+  (rr.revenue_over_time || []).forEach((r) => {
+    const date = r.date;
+    if (!byDate[date]) byDate[date] = { date, revenue: 0 } as SalesRow;
+    byDate[date].revenue = Number(r.revenue || 0);
+  });
+  // merge expenses
+  (rr.expenses_over_time || []).forEach((e) => {
+    const date = e.date;
+    if (!byDate[date]) byDate[date] = { date, revenue: 0 } as SalesRow;
+    byDate[date].expenses = (byDate[date].expenses || 0) + Number(e.amount || 0);
+  });
+  // merge profit
+  (rr.profit_over_time || []).forEach((p) => {
+    const date = p.date;
+    if (!byDate[date]) byDate[date] = { date, revenue: 0 } as SalesRow;
+    byDate[date].profit = Number(p.profit || 0);
+  });
+  // derive missing profit
+  Object.values(byDate).forEach((r) => {
+    if (r.profit === undefined || r.profit === null) {
+      const rev = Number(r.revenue || 0);
+      const exp = Number(r.expenses || 0);
+      r.profit = rev - exp;
+    }
+  });
+  return Object.values(byDate).sort((a, b) => a.date.localeCompare(b.date));
+}
+
+function loadRestaurantReport(this: void, _r: RestaurantReportData) {
+  // placeholder to satisfy TS when referencing in context value; actual impl replaced below
+}
+
+function clearReport(this: void) {
+  // placeholder to satisfy TS when referencing in context value; actual impl replaced below
+}

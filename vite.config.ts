@@ -39,5 +39,22 @@ export default defineConfig(({ mode }) => {
         "@": path.resolve(__dirname, "./src"),
       },
     },
+    build: {
+      chunkSizeWarningLimit: 1024,
+      rollupOptions: {
+        output: {
+          manualChunks(id: string) {
+            if (id.includes('node_modules')) {
+              if (id.includes('recharts')) return 'recharts';
+              if (id.includes('lucide-react')) return 'icons';
+              if (id.includes('@radix-ui')) return 'radix';
+              if (id.includes('@tanstack')) return 'tanstack';
+              if (id.includes('@supabase')) return 'supabase';
+              return 'vendor';
+            }
+          },
+        },
+      },
+    },
   });
 });

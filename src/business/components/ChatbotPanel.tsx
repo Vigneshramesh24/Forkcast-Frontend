@@ -16,7 +16,7 @@ const ChatbotPanel = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
-  const { ragSearch, totalRevenue, revenueByDate } = useBusinessData();
+  const { ragSearch, totalRevenue, revenueByDate, report } = useBusinessData();
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -41,54 +41,87 @@ const ChatbotPanel = () => {
     const thinkingMessage: Message = { id: thinkingId, text: "Analyzing...", sender: "bot" };
     setMessages((prev) => [...prev, thinkingMessage]);
 
-    // rudimentary rule-based / RAG responder using BusinessDataContext
+    // If remote Q&A endpoint configured and we have a report session, call it; else fallback to RAG
     const formatCurrency = (n: number) => `$${n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-
     const q = text.toLowerCase();
-    let botText = "";
+    const qaUrl = (import.meta as any).env?.VITE_REPORT_QA_URL as string | undefined;
+    const sessionId = localStorage.getItem('business_report_session_id');
 
-    try {
-      if (q.includes("total") && q.includes("revenue")) {
-        const total = totalRevenue();
-        botText = `Total revenue across uploaded rows is ${formatCurrency(total)}.`;
-      } else if (q.includes("revenue by date") || q.includes("by date") || q.includes("trend") || q.includes("sales trend")) {
-        const byDate = revenueByDate();
-        if (byDate.length === 0) {
-          botText = "I don't have any uploaded sales data yet. Try uploading a CSV in Analytics.";
+    const fallbackRag = () => {
+      let botText = "";
+      try {
+        if (q.includes("total") && q.includes("revenue")) {
+          const total = totalRevenue();
+          botText = `Total revenue across uploaded rows is ${formatCurrency(total)}.`;
+        } else if (q.includes("revenue by date") || q.includes("by date") || q.includes("trend") || q.includes("sales trend")) {
+          const byDate = revenueByDate();
+          if (byDate.length === 0) {
+            botText = "I don't have any uploaded sales data yet. Upload a JSON/PDF report on the right.";
+          } else {
+            const sample = byDate.slice(-5).map((d) => `${d.date}: ${formatCurrency(d.revenue)}`).join(', ');
+            botText = `I have ${byDate.length} date buckets. Recent examples — ${sample}.`;
+          }
+        } else if (q.match(/sales on|sales for|revenue on|revenue for/)) {
+          const rows = ragSearch(text);
+          if (rows.length === 0) botText = `I couldn't find sales for that date or query.`;
+          else {
+            const summed = rows.reduce((s, r) => s + (r.revenue || 0), 0);
+            botText = `Found ${rows.length} rows matching. Total: ${formatCurrency(summed)}. Example: ${rows
+              .slice(0, 3)
+              .map((r) => `${r.date} ${formatCurrency(r.revenue)}`)
+              .join(' ; ')}`;
+          }
         } else {
-          const sample = byDate.slice(-5).map((d) => `${d.date}: ${formatCurrency(d.revenue)}`).join(', ');
-          botText = `I have ${byDate.length} date buckets. Recent examples — ${sample}.`;
+          const rows = ragSearch(text);
+          if (rows.length === 0) botText = `I couldn't find data matching "${text}". Try queries like "total revenue", "sales on 2025-01-15", or "revenue trend".`;
+          else
+            botText = `I found ${rows.length} matching rows. Sample: ${rows
+              .slice(0, 3)
+              .map((r) => `${r.date} ${formatCurrency(r.revenue)}`)
+              .join(' ; ')}`;
         }
-      } else if (q.match(/sales on|sales for|revenue on|revenue for/)) {
-        // try to match a date-like token in the query
-        const rows = ragSearch(text);
-        if (rows.length === 0) botText = `I couldn't find sales for that date or query.`;
-        else {
-          const summed = rows.reduce((s, r) => s + (r.revenue || 0), 0);
-          botText = `Found ${rows.length} rows matching. Total: ${formatCurrency(summed)}. Example: ${rows
-            .slice(0, 3)
-            .map((r) => `${r.date} ${formatCurrency(r.revenue)}`)
-            .join(' ; ')}`;
-        }
-      } else {
-        // generic fallback: run ragSearch and show sample rows
-        const rows = ragSearch(text);
-        if (rows.length === 0) botText = `I couldn't find data matching "${text}". Try queries like "total revenue", "sales on 2023-10-01", or "revenue trend".`;
-        else
-          botText = `I found ${rows.length} matching rows. Sample: ${rows
-            .slice(0, 3)
-            .map((r) => `${r.date} ${formatCurrency(r.revenue)}`)
-            .join(' ; ')}`;
+      } catch (e) {
+        botText = "Sorry, I couldn't analyze the data — please try again.";
       }
-    } catch (e) {
-      botText = "Sorry, I couldn't analyze the data — please try again.";
+      setTimeout(() => {
+        setMessages((prev) => prev.map((m) => (m.id === thinkingId ? { ...m, text: botText } : m)));
+      }, 400);
+    };
+
+    if (!qaUrl || !sessionId) {
+      // No endpoint configured yet or no session context — fallback
+      fallbackRag();
+      return;
     }
 
-    // simulate a short processing delay and replace the thinking message
-    setTimeout(() => {
-      setMessages((prev) => prev.map((m) => (m.id === thinkingId ? { ...m, text: botText } : m)));
-    }, 600);
+    (async () => {
+      try {
+        const res = await fetch(qaUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question: text, session_id: sessionId }),
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        const answer = data.answer || data.text || data.message || 'No answer provided.';
+        setMessages((prev) => prev.map((m) => (m.id === thinkingId ? { ...m, text: String(answer) } : m)));
+      } catch (e) {
+        setMessages((prev) => prev.map((m) => (m.id === thinkingId ? { ...m, text: 'Endpoint unavailable — using local analysis.' } : m)));
+        fallbackRag();
+      }
+    })();
   };
+
+  if (!report) {
+    return (
+      <div className="h-full flex items-center justify-center bg-chat-bg rounded-2xl p-8">
+        <div className="text-center space-y-2">
+          <div className="text-lg font-semibold">Upload a JSON or PDF report</div>
+          <div className="text-sm text-muted-foreground">Once uploaded, you can chat with your data here.</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="h-full flex flex-col bg-chat-bg rounded-2xl p-8 min-h-0">

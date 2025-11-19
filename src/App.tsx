@@ -3,16 +3,18 @@ import { Toaster as Sonner } from "@/shared/components/ui/sonner";
 import { TooltipProvider } from "@/shared/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import LoginSelection from "@/pages/LoginSelection";
-import CustomerApp from "@/customer/CustomerApp";
-import BusinessApp from "@/business/BusinessApp";
-import Auth from "@/customer/pages/Auth";
-import RoleSelection from "@/customer/pages/RoleSelection";
-import Restaurants from "@/customer/pages/Restaurants";
-import RestaurantDetail from "@/customer/pages/RestaurantDetail";
-import SuggestionDetail from "@/customer/pages/SuggestionDetail";
-import FoodSearchResults from "@/customer/pages/FoodSearchResults";
-import CSVRestaurantDetail from "@/customer/pages/CSVRestaurantDetail";
+import { Suspense, lazy } from "react";
+
+const LoginSelection = lazy(() => import("@/pages/LoginSelection"));
+const CustomerApp = lazy(() => import("@/customer/CustomerApp"));
+const BusinessApp = lazy(() => import("@/business/BusinessApp"));
+const Auth = lazy(() => import("@/customer/pages/Auth"));
+const RoleSelection = lazy(() => import("@/customer/pages/RoleSelection"));
+const Restaurants = lazy(() => import("@/customer/pages/Restaurants"));
+const RestaurantDetail = lazy(() => import("@/customer/pages/RestaurantDetail"));
+const SuggestionDetail = lazy(() => import("@/customer/pages/SuggestionDetail"));
+const FoodSearchResults = lazy(() => import("@/customer/pages/FoodSearchResults"));
+const CSVRestaurantDetail = lazy(() => import("@/customer/pages/CSVRestaurantDetail"));
 
 const queryClient = new QueryClient();
 
@@ -22,6 +24,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <Suspense fallback={<div className="p-6 text-sm text-muted-foreground">Loading...</div>}>
         <Routes>
           {/* Landing: Authentication first */}
           <Route path="/" element={<Auth />} />
@@ -38,6 +41,7 @@ const App = () => (
           {/* Redirect unknown routes to auth */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        </Suspense>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
