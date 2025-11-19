@@ -1,0 +1,80 @@
+{
+  "restaurant_report": {
+    "metadata": {
+      "month": "2025-01",
+      "restaurant_name": "Your Restaurant Name"
+    },
+    "top_selling_item": {
+      "item_name": "",
+      "units_sold": 0,
+      "percentage_of_sales": 0.0
+    },
+    "top_5_selling_items": [
+      {
+        "item_name": "",
+        "units_sold": 0,
+        "percentage_of_sales": 0.0
+      }
+    ],
+    "bottom_5_selling_items": [
+      {
+        "item_name": "",
+        "units_sold": 0,
+        "percentage_of_sales": 0.0
+      }
+    ],
+    "menu_items": [
+      {
+        "item_name": "",
+        "category": "",
+        "price": 0.0
+      }
+    ],
+    "daily_sales_summary": [
+      {
+        "date": "",
+        "day_of_week": "",
+        "week_number": 0,
+        "number_of_sales": 0,
+        "units_sold": 0,
+        "total_sales_amount": 0.0
+      }
+    ],
+    "total_month_sales": {
+      "number_of_sales": 0,
+      "units_sold": 0,
+      "total_sales_amount": 0.0
+    },
+    "expenses_over_time": [
+      {
+        "date": "",
+        "expense_category": "",
+        "amount": 0.0
+      }
+    ],
+    "revenue_over_time": [
+      {
+        "date": "",
+        "revenue": 0.0
+      }
+    ],
+    "profit_over_time": [
+      {
+        "date": "",
+        "profit": 0.0
+      }
+    ],
+    "sales_percentages_by_item": [
+      {
+        "item_name": "",
+        "percentage_of_total_sales": 0.0
+      }
+    ],
+    "tips": [
+      {
+        "tip_title": "",
+        "tip_description": ""
+      }
+    ]
+  }
+}
