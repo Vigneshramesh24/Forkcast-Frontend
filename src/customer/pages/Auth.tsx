@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/shared/integrations/supabase/client";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
@@ -15,13 +15,17 @@ const Auth = () => {
   const [displayName, setDisplayName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
 
   useEffect(() => {
     // Check if user is already logged in and has a role
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
+      const params = new URLSearchParams(location.search);
+      const force = params.get("force") === "true";
+      const redirectParam = params.get("redirect");
+      if (session && !force) {
         // Check if user has a role assigned
         const { data: roles } = await supabase
           .from("user_roles")
@@ -30,20 +34,28 @@ const Auth = () => {
           .single();
         
         if (roles) {
-          // Redirect based on role
-          if (roles.role === "business_owner") {
-            navigate("/business/");
+          // Redirect based on role unless there's an explicit redirect param
+          if (redirectParam && redirectParam.startsWith("/")) {
+            navigate(decodeURIComponent(redirectParam));
           } else {
-            navigate("/customer/");
+            if (roles.role === "business_owner") {
+              navigate("/business/");
+            } else {
+              navigate("/customer/");
+            }
           }
         } else {
-          // No role assigned, go to role selection
+          // No role assigned, go to role selection (unless redirect provided)
+          if (redirectParam && redirectParam.startsWith("/")) {
+            navigate(decodeURIComponent(redirectParam));
+          } else {
             navigate("/select-role");
+          }
         }
       }
     };
     checkAuth();
-  }, [navigate]);
+  }, [navigate, location]);
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,8 +89,13 @@ const Auth = () => {
           description: "Please select your account type.",
         });
         
-        // Redirect to role selection page
-        navigate("/customer/select-role");
+        // If a redirect param was passed, go there (e.g. after upload flow). Otherwise continue to role selection.
+        const redirect = new URLSearchParams(location.search).get("redirect");
+        if (redirect && redirect.startsWith("/")) {
+          navigate(decodeURIComponent(redirect));
+        } else {
+          navigate("/customer/select-role");
+        }
       }
     } catch (error: any) {
       toast({
@@ -111,22 +128,32 @@ const Auth = () => {
           .select("role")
           .eq("user_id", user.id)
           .single();
-        
+        const redirect = new URLSearchParams(location.search).get("redirect");
+
         if (roles) {
           toast({
             title: "Welcome back!",
             description: "You've successfully signed in.",
           });
-          
-          // Redirect based on role
-          if (roles.role === "business_owner") {
-            navigate("/business/");
+
+          // If a redirect query param exists, go there (only allow internal paths)
+          if (redirect && redirect.startsWith("/")) {
+            navigate(decodeURIComponent(redirect));
           } else {
-            navigate("/customer/");
+            // Redirect based on role
+            if (roles.role === "business_owner") {
+              navigate("/business/");
+            } else {
+              navigate("/customer/");
+            }
           }
         } else {
-          // No role assigned, go to role selection
+          // No role assigned, go to role selection (or redirect)
+          if (redirect && redirect.startsWith("/")) {
+            navigate(decodeURIComponent(redirect));
+          } else {
             navigate("/select-role");
+          }
         }
       }
     } catch (error: any) {

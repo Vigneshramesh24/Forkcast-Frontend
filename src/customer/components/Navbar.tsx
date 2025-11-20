@@ -4,6 +4,7 @@ import { Search, MapPin, User, Menu, LogOut } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/shared/integrations/supabase/client";
 import { useToast } from "@/shared/hooks/use-toast";
+import { useEffect } from "react";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -28,7 +29,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-secondary shadow-md">
+  <nav className="sticky top-0 z-50 bg-[#8b1f1f] shadow-[0_2px_0_0_rgba(255,255,255,0.05),0_6px_18px_-2px_rgba(0,0,0,0.45)] border-b border-white/10">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -40,27 +41,19 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
-            <Link to="/restaurants" className="text-secondary-foreground hover:text-primary transition-colors">
+            <Link to="/restaurants" className="text-white hover:text-primary transition-colors">
               Restaurants
             </Link>
-            <Link to="/reviews" className="text-secondary-foreground hover:text-primary transition-colors">
-              Reviews
-            </Link>
-            <Link to="/business" className="text-secondary-foreground hover:text-primary transition-colors">
-              For Business
-            </Link>
+            {/* 'For Business' removed from customer navbar */}
           </div>
 
-          {/* Profile & Sign Out */}
+          {/* Sign Out (profile button removed) */}
           <div className="hidden md:flex items-center gap-2">
-            <Button variant="ghost" size="sm" className="text-secondary-foreground hover:text-primary">
-              <User className="h-5 w-5" />
-            </Button>
             <Button 
               variant="ghost" 
               size="sm" 
               onClick={handleSignOut}
-              className="text-secondary-foreground hover:text-destructive"
+              className="text-white hover:text-destructive"
             >
               <LogOut className="h-5 w-5" />
             </Button>
@@ -77,22 +70,13 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-sidebar-border">
+            <div className="md:hidden py-4 border-t border-sidebar-border">
             <div className="flex flex-col space-y-3">
-              <Link to="/restaurants" className="text-secondary-foreground hover:text-primary py-2">
+              <Link to="/restaurants" className="text-white hover:text-primary py-2">
                 Restaurants
               </Link>
-              <Link to="/reviews" className="text-secondary-foreground hover:text-primary py-2">
-                Reviews
-              </Link>
-              <Link to="/business" className="text-secondary-foreground hover:text-primary py-2">
-                For Business
-              </Link>
+              {/* 'For Business' removed from customer navbar */}
               <div className="pt-4 border-t border-sidebar-border flex flex-col gap-2">
-                <Button variant="ghost" size="sm" className="justify-start text-secondary-foreground">
-                  <User className="h-5 w-5 mr-2" />
-                  Profile
-                </Button>
                 <Button 
                   variant="ghost" 
                   size="sm" 

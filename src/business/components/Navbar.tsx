@@ -32,11 +32,11 @@ const Navbar = () => {
     navigate('/auth');
   }, [navigate, toast]);
   return (
-    <nav className="fixed top-0 left-0 right-0 h-[56px] bg-navbar text-navbar-foreground z-50">
+  <nav className="fixed top-0 left-0 right-0 h-[56px] bg-[#8b1f1f]/90 text-white backdrop-blur-sm z-50">
       <div className="flex items-center justify-between h-full px-8">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 cursor-pointer">
-          <Utensils className="h-6 w-6 text-primary rotate-90" strokeWidth={2.5} />
+          <Utensils className="h-6 w-6 text-white rotate-90" strokeWidth={2.5} />
         </Link>
 
         {/* Account Button */}
@@ -44,10 +44,10 @@ const Navbar = () => {
           <DropdownMenuTrigger asChild>
             <Button 
               variant="ghost" 
-              className="h-9 px-3 rounded-full bg-logo-bg hover:bg-logo-bg/90 text-foreground gap-2 transition-smooth shadow-sm"
+              className="h-9 px-3 rounded-full bg-logo-bg hover:bg-logo-bg/90 text-white gap-2 transition-smooth shadow-sm"
             >
-              <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center">
-                <User className="h-3 w-3 text-primary-foreground" />
+              <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center">
+                <User className="h-3 w-3 text-white" />
               </div>
               <ChevronDown className="h-3 w-3 opacity-70" />
             </Button>
