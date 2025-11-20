@@ -3,6 +3,7 @@ import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { ScrollArea } from "@/shared/components/ui/scroll-area";
 import { useState, useRef, useEffect } from "react";
+import MarkdownText from "@/shared/components/MarkdownText";
 import { useBusinessData } from "@/business/lib/BusinessDataContext";
 
 interface Message {
@@ -46,6 +47,11 @@ const ChatbotPanel = () => {
       try {
         const form = new FormData();
         form.append('question', text);
+        // Include pdf_id if available, so backend can use stored PDF
+        const currentPdfId = localStorage.getItem('current_pdf_id');
+        if (currentPdfId) {
+          form.append('pdf_id', currentPdfId);
+        }
         
         // Get uploaded PDFs if any (from the report upload)
         // Note: In this setup, we're passing the question only since PDFs are 
@@ -72,7 +78,7 @@ const ChatbotPanel = () => {
     return (
       <div className="h-full flex items-center justify-center bg-chat-bg rounded-2xl p-8">
         <div className="text-center space-y-2">
-          <div className="text-lg font-semibold">Upload a JSON or PDF report</div>
+          <div className="text-lg font-semibold">Upload a PDF report</div>
           <div className="text-sm text-muted-foreground">Once uploaded, you can chat with your data here.</div>
         </div>
       </div>
@@ -106,7 +112,11 @@ const ChatbotPanel = () => {
                         : "bg-card text-card-foreground shadow-sm rounded-[20px] rounded-tl-md border border-border/50"
                     }`}
                   >
-                    <p className="text-sm leading-relaxed">{message.text}</p>
+                    {message.sender === "bot" ? (
+                      <MarkdownText text={message.text} className="text-sm leading-relaxed" />
+                    ) : (
+                      <p className="text-sm leading-relaxed">{message.text}</p>
+                    )}
                   </div>
                 </div>
               ))
